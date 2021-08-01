@@ -36,7 +36,7 @@ dependencies {
   implementation 'io.javalin:javalin:3.13.3'
 
   // Jackson, a JSON library for Java
-  implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.1'
+  implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.4'
   // Simple Logging Facade for Java
   implementation 'org.slf4j:slf4j-simple:1.7.30'
 
