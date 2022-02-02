@@ -33,7 +33,7 @@ dependencies {
   implementation 'com.google.guava:guava:30.1-jre'
 
   // Javalin, a simple web framework for Java
-  implementation 'io.javalin:javalin:3.13.3'
+  implementation 'io.javalin:javalin:4.3.0'
 
   // Jackson, a JSON library for Java
   implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.1'
