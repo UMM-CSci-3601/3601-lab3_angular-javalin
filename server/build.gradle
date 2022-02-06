@@ -40,7 +40,7 @@ dependencies {
   // Simple Logging Facade for Java
   implementation 'org.slf4j:slf4j-simple:1.7.35'
 
-  implementation 'com.google.code.gson:gson:2.8.6'
+  implementation 'com.google.code.gson:gson:2.8.9'
 
   // JUnit Jupiter API for testing.
   testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
