@@ -21,18 +21,18 @@ public class FilterUsersByCombinedFiltersFromDB {
     UserDatabase db = new UserDatabase("/users.json");
     Map<String, List<String>> queryParams = new HashMap<>();
 
-    queryParams.put("age", Arrays.asList(new String[] { "25" }));
+    queryParams.put("age", Arrays.asList(new String[] {"25"}));
     User[] age25Users = db.listUsers(queryParams);
     assertEquals(2, age25Users.length, "Incorrect number of users with age 25");
 
     queryParams.clear();
-    queryParams.put("company", Arrays.asList(new String[] { "OHMNET" }));
+    queryParams.put("company", Arrays.asList(new String[] {"OHMNET"}));
     User[] ohmnetUsers = db.listUsers(queryParams);
     assertEquals(2, ohmnetUsers.length, "Incorrect number of users with company OHMNET");
 
     queryParams.clear();
-    queryParams.put("age", Arrays.asList(new String[] { "25" }));
-    queryParams.put("company", Arrays.asList(new String[] { "OHMNET" }));
+    queryParams.put("age", Arrays.asList(new String[] {"25"}));
+    queryParams.put("company", Arrays.asList(new String[] {"OHMNET"}));
     User[] ohmnetAge25Users = db.listUsers(queryParams);
     assertEquals(1, ohmnetAge25Users.length, "Incorrect number of users with company OHMNET and age 25");
   }

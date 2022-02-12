@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.javalin.http.BadRequestResponse;
 
@@ -23,10 +23,9 @@ public class UserDatabase {
   private User[] allUsers;
 
   public UserDatabase(String userDataFile) throws IOException {
-    Gson gson = new Gson();
     InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream(userDataFile));
-    allUsers = gson.fromJson(reader, User[].class);
-    reader.close();
+    ObjectMapper objectMapper = new ObjectMapper();
+    allUsers = objectMapper.readValue(reader, User[].class);
   }
 
   public int size() {

@@ -21,11 +21,11 @@ public class FilterUsersByCompanyFromDB {
     UserDatabase db = new UserDatabase("/users.json");
     User[] allUsers = db.listUsers(new HashMap<>());
 
-    User[] OHMNET_Users = db.filterUsersByCompany(allUsers, "OHMNET");
-    assertEquals(2, OHMNET_Users.length, "Incorrect number of users with company OHMNET");
+    User[] ohmnetUsers = db.filterUsersByCompany(allUsers, "OHMNET");
+    assertEquals(2, ohmnetUsers.length, "Incorrect number of users with company OHMNET");
 
-    User[] KINETICUT_Users = db.filterUsersByCompany(allUsers, "KINETICUT");
-    assertEquals(1, KINETICUT_Users.length, "Incorrect number of users with company KINETICUT");
+    User[] kineticutUsers = db.filterUsersByCompany(allUsers, "KINETICUT");
+    assertEquals(1, kineticutUsers.length, "Incorrect number of users with company KINETICUT");
   }
 
   @Test
@@ -33,12 +33,12 @@ public class FilterUsersByCompanyFromDB {
     UserDatabase db = new UserDatabase("/users.json");
     Map<String, List<String>> queryParams = new HashMap<>();
 
-    queryParams.put("company", Arrays.asList(new String[] { "OHMNET" }));
-    User[] OHMNET_Users = db.listUsers(queryParams);
-    assertEquals(2, OHMNET_Users.length, "Incorrect number of users with company KINETICUT");
+    queryParams.put("company", Arrays.asList(new String[] {"OHMNET"}));
+    User[] ohmnetUsers = db.listUsers(queryParams);
+    assertEquals(2, ohmnetUsers.length, "Incorrect number of users with company KINETICUT");
 
-    queryParams.put("company", Arrays.asList(new String[] { "KINETICUT" }));
-    User[] KINETICUT_Users = db.listUsers(queryParams);
-    assertEquals(1, KINETICUT_Users.length, "Incorrect number of users with company KINETICUT");
+    queryParams.put("company", Arrays.asList(new String[] {"KINETICUT"}));
+    User[] kineticutUsers = db.listUsers(queryParams);
+    assertEquals(1, kineticutUsers.length, "Incorrect number of users with company KINETICUT");
   }
 }

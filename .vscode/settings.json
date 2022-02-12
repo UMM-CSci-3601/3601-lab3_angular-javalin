@@ -11,9 +11,10 @@
       "html"
     ],
     "cSpell.words": [
-        "CSCI",
-        "sidenav",
-        "todos"
+      "CSCI",
+      "Javalin",
+      "sidenav",
+      "todos"
     ],
     "angular.enable-experimental-ivy-prompt": false,
 }

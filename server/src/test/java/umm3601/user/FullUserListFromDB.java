@@ -16,9 +16,11 @@ public class FullUserListFromDB {
   public void totalUserCount() throws IOException {
     UserDatabase db = new UserDatabase("/users.json");
     User[] allUsers = db.listUsers(new HashMap<>());
-    assertEquals(10, allUsers.length, "Incorrect total number of users");
+    final int expectedNumberOfUsers = 10;
+    assertEquals(expectedNumberOfUsers, allUsers.length, "Incorrect total number of users");
   }
 
+  @SuppressWarnings({ "MagicNumber" })
   @Test
   public void firstUserInFullList() throws IOException {
     UserDatabase db = new UserDatabase("/users.json");

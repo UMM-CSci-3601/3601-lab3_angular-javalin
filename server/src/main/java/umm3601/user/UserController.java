@@ -1,6 +1,7 @@
 package umm3601.user;
 
 import io.javalin.http.Context;
+import io.javalin.http.HttpCode;
 import io.javalin.http.NotFoundResponse;
 
 /**
@@ -33,7 +34,7 @@ public class UserController {
     User user = userDatabase.getUser(id);
     if (user != null) {
       ctx.json(user);
-      ctx.status(201);
+      ctx.status(HttpCode.OK);
     } else {
       throw new NotFoundResponse("No user with id " + id + " was found.");
     }

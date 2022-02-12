@@ -16,11 +16,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-import io.javalin.core.validation.Validator;
 import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
+import io.javalin.http.HttpCode;
 import io.javalin.http.NotFoundResponse;
-
 import umm3601.Server;
 
 /**
@@ -28,6 +27,14 @@ import umm3601.Server;
  *
  * @throws IOException
  */
+// The tests here include a ton of "magic numbers" (numeric constants).
+// It wasn't clear to me that giving all of them names would actually
+// help things. The fact that it wasn't obvious what to call some
+// of them says a lot. Maybe what this ultimately means is that
+// these tests can/should be restructured so the constants (there are
+// also a lot of "magic strings" that Checkstyle doesn't actually
+// flag as a problem) make more sense.
+@SuppressWarnings({ "MagicNumber" })
 public class UserControllerSpec {
 
   private Context ctx = mock(Context.class);
@@ -44,7 +51,7 @@ public class UserControllerSpec {
   }
 
   @Test
-  public void GETRequestForAllUsers() throws IOException {
+  public void canGetAllUsers() throws IOException {
     // Call the method on the mock controller
     userController.getUsers(ctx);
 
@@ -55,9 +62,9 @@ public class UserControllerSpec {
   }
 
   @Test
-  public void GETRequestForAge25Users() throws IOException {
+  public void canGetUsersWithAge25() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("age", Arrays.asList(new String[] { "25" }));
+    queryParams.put("age", Arrays.asList(new String[] {"25"}));
 
     when(ctx.queryParamMap()).thenReturn(queryParams);
     userController.getUsers(ctx);
@@ -76,11 +83,11 @@ public class UserControllerSpec {
    * we get a reasonable error code back.
    */
   @Test
-  public void GETRequestForUsersWithIllegalAge() {
+  public void respondsAppropriatelyToIllegalAge() {
     // We'll set the requested "age" to be a string ("abc")
     // that can't be parsed to a number.
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("age", Arrays.asList(new String[] { "abc" }));
+    queryParams.put("age", Arrays.asList(new String[] {"abc"}));
 
     when(ctx.queryParamMap()).thenReturn(queryParams);
     // This should now throw a `BadRequestResponse` exception because
@@ -91,10 +98,10 @@ public class UserControllerSpec {
   }
 
   @Test
-  public void GETRequestForCompanyOHMNETUsers() throws IOException {
+  public void canGetUsersWithCompany() throws IOException {
 
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("company", Arrays.asList(new String[] { "OHMNET" }));
+    queryParams.put("company", Arrays.asList(new String[] {"OHMNET"}));
 
     when(ctx.queryParamMap()).thenReturn(queryParams);
     userController.getUsers(ctx);
@@ -108,12 +115,12 @@ public class UserControllerSpec {
   }
 
   @Test
-  public void GETRequestForCompanyOHMNETAge25Users() throws IOException {
+  public void canGetUsersWithGivenAgeAndCompany() throws IOException {
 
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("company", Arrays.asList(new String[] { "OHMNET" }));
+    queryParams.put("company", Arrays.asList(new String[] {"OHMNET"}));
 
-    queryParams.put("age", Arrays.asList(new String[] { "25" }));
+    queryParams.put("age", Arrays.asList(new String[] {"25"}));
 
     when(ctx.queryParamMap()).thenReturn(queryParams);
     userController.getUsers(ctx);
@@ -129,14 +136,14 @@ public class UserControllerSpec {
   }
 
   @Test
-  public void GETRequestForUserWithExistentId() throws IOException {
+  public void canGetUserWithSpecifiedId() throws IOException {
     when(ctx.pathParam("id")).thenReturn("588935f5c668650dc77df581");
     userController.getUser(ctx);
-    verify(ctx).status(201);
+    verify(ctx).status(HttpCode.OK);
   }
 
   @Test
-  public void GETRequestForUserWithNonexistentId() throws IOException {
+  public void respondsAppropriatelyToRequestForNonexistentId() throws IOException {
     when(ctx.pathParam("id")).thenReturn("nonexistent");
     Assertions.assertThrows(NotFoundResponse.class, () -> {
       userController.getUser(ctx);
