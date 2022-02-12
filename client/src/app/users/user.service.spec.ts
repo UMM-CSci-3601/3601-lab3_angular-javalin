@@ -151,46 +151,36 @@ describe('UserService', () => {
       });
 
       it('correctly calls api/users with filter parameter \'age\'', () => {
+        const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(testUsers));
 
-        userService.getUsers({ age: 25 }).subscribe(
-          users => expect(users).toBe(testUsers)
-        );
-
-        // Specify that (exactly) one request will be made to the specified URL with the role parameter.
-        const req = httpTestingController.expectOne(
-          (request) => request.url.startsWith(userService.userUrl) && request.params.has('age')
-        );
-
-        // Check that the request made to that URL was a GET request.
-        expect(req.request.method).toEqual('GET');
-
-        // Check that the role parameter was 'admin'
-        expect(req.request.params.get('age')).toEqual('25');
-
-        req.flush(testUsers);
+        userService.getUsers({ age: 25 }).subscribe((users: User[]) => {
+          expect(users)
+            .withContext('expected users')
+            .toEqual(testUsers);
+          expect(mockedMethod)
+            .withContext('one call')
+            .toHaveBeenCalledTimes(1);
+          expect(mockedMethod)
+            .withContext('talks to the correct endpoint')
+            .toHaveBeenCalledWith(userService.userUrl, { params: new HttpParams().set('age', '25') });
+        });
       });
 
       it('correctly calls api/users with multiple filter parameters', () => {
+        const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(testUsers));
 
-        userService.getUsers({ role: 'editor', company: 'IBM', age: 37 }).subscribe(
-          users => expect(users).toBe(testUsers)
-        );
-
-        // Specify that (exactly) one request will be made to the specified URL with the role parameter.
-        const req = httpTestingController.expectOne(
-          (request) => request.url.startsWith(userService.userUrl)
-            && request.params.has('role') && request.params.has('company') && request.params.has('age')
-        );
-
-        // Check that the request made to that URL was a GET request.
-        expect(req.request.method).toEqual('GET');
-
-        // Check that the role parameters are correct
-        expect(req.request.params.get('role')).toEqual('editor');
-        expect(req.request.params.get('company')).toEqual('IBM');
-        expect(req.request.params.get('age')).toEqual('37');
-
-        req.flush(testUsers);
+        const expectedHttpParams = new HttpParams().set('role', 'editor').set('company', 'IBM').set('age', '37');
+        userService.getUsers({ role: 'editor', company: 'IBM', age: 37 }).subscribe((users: User[]) => {
+          expect(users)
+            .withContext('expected users')
+            .toEqual(testUsers);
+          expect(mockedMethod)
+            .withContext('one call')
+            .toHaveBeenCalledTimes(1);
+          expect(mockedMethod)
+            .withContext('talks to the correct endpoint')
+            .toHaveBeenCalledWith(userService.userUrl, { params: expectedHttpParams });
+        });
       });
     });
   });
