@@ -169,7 +169,6 @@ describe('UserService', () => {
       it('correctly calls api/users with multiple filter parameters', () => {
         const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(testUsers));
 
-        const expectedHttpParams = new HttpParams().set('role', 'editor').set('company', 'IBM').set('age', '37');
         userService.getUsers({ role: 'editor', company: 'IBM', age: 37 }).subscribe((users: User[]) => {
           expect(users)
             .withContext('expected users')
@@ -178,8 +177,20 @@ describe('UserService', () => {
             .withContext('one call')
             .toHaveBeenCalledTimes(1);
           expect(mockedMethod)
-            .withContext('talks to the correct endpoint')
-            .toHaveBeenCalledWith(userService.userUrl, { params: expectedHttpParams });
+            .withContext('talks to the correct endpoint');
+          const calledHttpParams: HttpParams = (mockedMethod.calls.argsFor(0)[1].params) as HttpParams;
+          expect(calledHttpParams.keys().length)
+            .withContext('should have 3 params')
+            .toEqual(3);
+          expect(calledHttpParams.get('role'))
+            .withContext('role of editor')
+            .toEqual('editor');
+          expect(calledHttpParams.get('company'))
+            .withContext('company being IBM')
+            .toEqual('IBM');
+          expect(calledHttpParams.get('age'))
+            .withContext('age being 37')
+            .toEqual('37');
         });
       });
     });
