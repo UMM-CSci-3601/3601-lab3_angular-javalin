@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
-import { defer } from 'rxjs';
+import { TestBed, waitForAsync } from '@angular/core/testing';
+import { defer, of } from 'rxjs';
 import { User } from './user';
 import { UserService } from './user.service';
 
@@ -68,11 +68,6 @@ describe('UserService', () => {
     httpClient = TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
     userService = new UserService(httpClient);
-
-    // Construct an instance of the service with the "spy"
-    // HTTP client.
-    httpClientSpy = jasmine.createSpyObj('HttpClient', ['get']);
-    userServiceSpy = new UserService(httpClientSpy);
   });
 
   afterEach(() => {
@@ -82,22 +77,36 @@ describe('UserService', () => {
 
   describe('getUsers()', () => {
 
-    it('calls `api/users` when `getUsers()` is called with no parameters', (done: DoneFn) => {
-      httpClientSpy.get.and.returnValue(asyncData(testUsers));
+    it('calls `api/users` when `getUsers()` is called with no parameters', waitForAsync(() => {
+      // Mock the `httpClient.get()` method, so that instead of making an HTTP request,
+      // it just returns our test data.
+      const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(testUsers));
 
-      userServiceSpy.getUsers().subscribe({
-        next: users => {
-          expect(users)
-            .withContext('expected users')
-            .toEqual(testUsers);
-          done();
-        },
-        error: done.fail
+      // Call `userService.getUsers()` and confirm that the correct call has
+      // been made with the correct arguments.
+      //
+      // We have to `subscribe()` to the `Observable` returned by `getUsers()`.
+      // The `users` argument in the function is the array of Users returned by
+      // the call to `getUsers()`.
+      userService.getUsers().subscribe((users: User[]) => {
+        // The array of `User`s returned by `getUsers()` should be
+        // the array `testUsers`.
+        expect(users)
+          .withContext('expected users')
+          .toEqual(testUsers);
+        // The mocked method (`httpClient.get()`) should have been called
+        // exactly one time.
+        expect(mockedMethod)
+          .withContext('one call')
+          .toHaveBeenCalledTimes(1);
+        // The mocked method should have been called with two arguments:
+        //   * the appropriate URL ('/api/users' defined in the `UserService`)
+        //   * An options object containing an empty `HttpParams`
+        expect(mockedMethod)
+          .withContext('talks to the correct endpoint')
+          .toHaveBeenCalledWith(userService.userUrl, { params: new HttpParams() });
       });
-      expect(httpClientSpy.get.calls.count())
-        .withContext('one call')
-        .toBe(1);
-    });
+    }));
 
     describe('Calling getUsers() with parameters correctly forms the HTTP request', () => {
       /*
