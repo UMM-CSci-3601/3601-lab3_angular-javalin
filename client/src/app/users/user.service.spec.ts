@@ -127,22 +127,27 @@ describe('UserService', () => {
        */
 
       it('correctly calls api/users with filter parameter \'admin\'', () => {
-        userService.getUsers({ role: 'admin' }).subscribe(
-          users => expect(users).toBe(testUsers)
-        );
+        const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(testUsers));
 
-        // Specify that (exactly) one request will be made to the specified URL with the role parameter.
-        const req = httpTestingController.expectOne(
-          (request) => request.url.startsWith(userService.userUrl) && request.params.has('role')
-        );
-
-        // Check that the request made to that URL was a GET request.
-        expect(req.request.method).toEqual('GET');
-
-        // Check that the role parameter was 'admin'
-        expect(req.request.params.get('role')).toEqual('admin');
-
-        req.flush(testUsers);
+        userService.getUsers({ role: 'admin' }).subscribe((users: User[]) => {
+          // The array of `User`s returned by `getUsers()` should be
+          // the array `testUsers`. This is "weird" because we'd truly be expecting
+          // the server to return just `admin` users, but as mentioned above, we're
+          // not trying to get the server here.
+          expect(users)
+            .withContext('expected users')
+            .toEqual(testUsers);
+          expect(mockedMethod)
+            .withContext('one call')
+            .toHaveBeenCalledTimes(1);
+          // The mocked method should have been called with two arguments:
+          //   * the appropriate URL ('/api/users' defined in the `UserService`)
+          //   * An options object containing an `HttpParams` with the `role`:`admin`
+          //     key-value pair.
+          expect(mockedMethod)
+            .withContext('talks to the correct endpoint')
+            .toHaveBeenCalledWith(userService.userUrl, { params: new HttpParams().set('role', 'admin') });
+        });
       });
 
       it('correctly calls api/users with filter parameter \'age\'', () => {
