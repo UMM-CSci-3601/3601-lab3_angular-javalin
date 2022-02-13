@@ -170,15 +170,32 @@ describe('UserService', () => {
         const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(testUsers));
 
         userService.getUsers({ role: 'editor', company: 'IBM', age: 37 }).subscribe((users: User[]) => {
+          // This test checks that the call to `userService.getUsers()` does several things:
+          //   * It returns the expected array of users (namely `testUsers` as discussed above).
+          //   * It calls the mocked method (`HttpClient#get()`) exactly once.
+          //   * It calls it with the correct endpoint (`userService.userUrl`).
+          //   * It calls it with the correct parameters:
+          //      * There should be three parameters (this makes sure that there aren't extras).
+          //      * There should be a "role:editor" key-value pair.
+          //      * And a "company:IBM" pair.
+          //      * And a "age:37" pair.
+
+          // This gets the arguments for the first (and in this case only) call to the `mockMethod`.
+          const [url, options] = mockedMethod.calls.argsFor(0);
+          // Gets the `HttpParams` from the options part of the call.
+          // `options.param` can return any of a broad number of types;
+          // it is in fact an instance of `HttpParams`, and I need to use
+          // that fact, so I'm casting it (the `as HttpParams` bit).
+          const calledHttpParams: HttpParams = (options.params) as HttpParams;
           expect(users)
             .withContext('expected users')
             .toEqual(testUsers);
           expect(mockedMethod)
             .withContext('one call')
             .toHaveBeenCalledTimes(1);
-          expect(mockedMethod)
-            .withContext('talks to the correct endpoint');
-          const calledHttpParams: HttpParams = (mockedMethod.calls.argsFor(0)[1].params) as HttpParams;
+          expect(url)
+            .withContext('talks to the correct endpoint')
+            .toEqual(userService.userUrl);
           expect(calledHttpParams.keys().length)
             .withContext('should have 3 params')
             .toEqual(3);
