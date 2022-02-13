@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -39,11 +39,37 @@ const COMMON_IMPORTS: any[] = [
   RouterTestingModule,
 ];
 
+// The `UserListComponent` being tested
+let userList: UserListComponent;
+
+// This constructs the `userList` (declared
+// above) that will be used throughout the tests.
+// This is called in a `beforeEach()` in each of the
+// `describe()` sections below.
+async function constructUserList() {
+    // Compile all the components in the test bed
+  // so that everything's ready to go.
+  await TestBed.compileComponents();
+  // Create a fixture of the UserListComponent. That
+  // allows us to get an instance of the component
+  // (userList, below) that we can control in
+  // the tests.
+  const fixture = TestBed.createComponent(UserListComponent);
+  userList = fixture.componentInstance;
+  // Tells Angular to sync the data bindings between
+  // the model and the DOM. This ensures, e.g., that the
+  // `userList` component actually requests the list
+  // of users from the `MockUserService` so that it's
+  // up to date before we start running tests on it.
+  fixture.detectChanges();
+}
+
 describe('UserListComponent', () => {
-
-  let userList: UserListComponent;
-  let fixture: ComponentFixture<UserListComponent>;
-
+  // Set up the `TestBed` so that it uses
+  // a `MockUserService` in place of the real `UserService`
+  // for the purposes of the testing. We also have to include
+  // the relevant imports and declarations so that the tests
+  // can find all the necessary parts.
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [COMMON_IMPORTS],
@@ -55,17 +81,9 @@ describe('UserListComponent', () => {
     });
   });
 
-  beforeEach(waitForAsync(() => {
-    TestBed.compileComponents().then(() => {
-      // Create a "fixture" of the UserListComponent. that
-      // allows us to get an instance of the component
-      // (userList, below) that we can "control" in
-      // the tests.
-      fixture = TestBed.createComponent(UserListComponent);
-      userList = fixture.componentInstance;
-      fixture.detectChanges();
-    });
-  }));
+  // Construct the `userList` used for the testing in the `it` statements
+  // below.
+  beforeEach(waitForAsync(constructUserList));
 
   it('contains all the users', () => {
     expect(userList.serverFilteredUsers.length).toBe(3);
@@ -89,7 +107,7 @@ describe('UserListComponent', () => {
 });
 
 /*
- * This test is a little odd, but illustrates how we can use "stubbing"
+ * This test is a little odd, but illustrates how we can use stubs
  * to create mock objects (a service in this case) that be used for
  * testing. Here we set up the mock UserService (userServiceStub) so that
  * _always_ fails (throws an exception) when you request a set of users.
@@ -99,8 +117,6 @@ describe('UserListComponent', () => {
  * testing tools. Hopefully it's useful as an example in that regard.
  */
 describe('Misbehaving User List', () => {
-  let userList: UserListComponent;
-  let fixture: ComponentFixture<UserListComponent>;
 
   let userServiceStub: {
     getUsers: () => Observable<User[]>;
@@ -111,10 +127,10 @@ describe('Misbehaving User List', () => {
     // stub UserService for test purposes
     userServiceStub = {
       getUsers: () => new Observable(observer => {
-        observer.error('Error-prone observable');
+        observer.error('getUsers() Observer generates an error');
       }),
       getUsersFiltered: () => new Observable(observer => {
-        observer.error('Error-prone observable');
+        observer.error('getUsersFiltered() Observer generates an error');
       })
     };
 
@@ -127,13 +143,9 @@ describe('Misbehaving User List', () => {
     });
   });
 
-  beforeEach(waitForAsync(() => {
-    TestBed.compileComponents().then(() => {
-      fixture = TestBed.createComponent(UserListComponent);
-      userList = fixture.componentInstance;
-      fixture.detectChanges();
-    });
-  }));
+  // Construct the `userList` used for the testing in the `it` statement
+  // below.
+  beforeEach(waitForAsync(constructUserList));
 
   it('fails to load users if we do not set up a UserListService', () => {
     // Since calling both getUsers() and getUsersFiltered() return

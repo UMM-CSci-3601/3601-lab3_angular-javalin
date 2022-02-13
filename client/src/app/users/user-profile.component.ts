@@ -19,8 +19,8 @@ export class UserProfileComponent implements OnInit {
     // We subscribe to the parameter map here so we'll be notified whenever
     // that changes (i.e., when the URL changes) so this component will update
     // to display the newly requested user.
-    this.route.paramMap.subscribe((pmap) => {
-      this.id = pmap.get('id');
+    this.route.paramMap.subscribe((paramMap) => {
+      this.id = paramMap.get('id');
       this.userService.getUserById(this.id).subscribe(user => this.user = user);
     });
   }
