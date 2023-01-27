@@ -16,6 +16,6 @@ export class AppPage {
   }
 
   getNavLink(navOption: string) {
-    return cy.contains('[routerlink] > .mat-list-item-content', `${navOption}`);
+    return cy.contains('[routerlink] > .mat-list-item-content', navOption);
   }
 }

@@ -6,7 +6,6 @@ describe('App', () => {
   beforeEach(() => page.navigateTo());
 
   it('Should load', () => {
-    //page.navigateTo();
     cy.document().should('exist');
   });
 
@@ -33,14 +32,18 @@ describe('App', () => {
     it('Should have a working navigation to "Users"', () => {
       page.getSidenavButton().click();
       page.getSidenav();
+      // When we click the "Users" option in the side navbar…
       page.getNavLink('Users').click();
+      // …then the URL of the current page should change to "…/users".
       cy.url().should('match', /.*\/users$/);
     });
 
 
     it('Should have a working navigation to "Home"', () => {
       page.getSidenavButton().click();
+      // When we click the "Home" option in the side navbar…
       page.getNavLink('Home').click();
+      // …then the URL of the current page should change to "…/".
       cy.url().should('match', /.*\/$/);
     });
   });

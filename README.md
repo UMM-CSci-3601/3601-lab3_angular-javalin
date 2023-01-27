@@ -4,20 +4,22 @@
 [![Client Build Status](../../actions/workflows/client-angular.yaml/badge.svg)](../../actions/workflows/client-angular.yaml)
 [![End to End Build Status](../../actions/workflows/e2e.yaml/badge.svg)](../../actions/workflows/e2e.yaml)
 
-* [Setup](#setup)
-  * [Open the project in VS Code](#open-the-project-in-vs-code)
-  * [Installing the client dependencies](#installing-the-client-dependencies)
-  * [Enable ESLint in VS Code](#enable-eslint-in-vs-code)
-* [Running your project](#running-your-project)
-* [Testing and Continuous Integration](#testing-and-continuous-integration)
-  * [Testing the client](#testing-the-client)
-    * [Linting the client](#linting-the-client)
-  * [Testing the server](#testing-the-server)
-  * [End to end testing with Cypress](#end-to-end-testing-with-cypress)
-  * [GitHub Actions](#github-actions)
-* [Resources](#resources)
-  * [Angular](#angular)
-  * [Cypress (end-to-end testing)](#cypress-end-to-end-testing)
+- [Setup](#setup)
+  - [Open the project in VS Code](#open-the-project-in-vs-code)
+  - [Installing the client dependencies](#installing-the-client-dependencies)
+  - [Enable ESLint in VS Code](#enable-eslint-in-vs-code)
+- [Running your project](#running-your-project)
+  - [Starting the server](#starting-the-server)
+  - [Starting the client](#starting-the-client)
+- [Testing and Continuous Integration](#testing-and-continuous-integration)
+  - [Testing the client](#testing-the-client)
+    - [Linting the client](#linting-the-client)
+  - [Testing the server](#testing-the-server)
+  - [End to end testing with Cypress](#end-to-end-testing-with-cypress)
+  - [GitHub Actions](#github-actions)
+- [Resources](#resources)
+  - [Angular](#angular)
+  - [Cypress (end-to-end testing)](#cypress-end-to-end-testing)
 
 During this lab, you will build a basic client-side application using Angular,
 which will connect to a server-side todo API similar to the one you created in
@@ -25,17 +27,17 @@ the previous lab. Your Angular application should enable you
 to handle user input, and display data returned from the server in nice ways.
 As always, you'll be expected to make good use of the version control and project management tools available to you:
 
-* Write good commit messages
-* Use branching and pull requests for features
-* Test things
-* Document issues and plans
-* Etc., etc.
+- Write good commit messages
+- Use branching and pull requests for features
+- Test things
+- Document issues and plans
+- Etc., etc.
 
 Your specific tasks for this lab can be found in the [LABTASKS.md](LABTASKS.md)
 file in this repository.
 
 > :warning: One thing to keep in mind is that the Angular developers provide two
-major updates to Angular each year. This lab is built using Angular 11. Pay attention to
+major updates to Angular each year. This lab is built using Angular 13. Pay attention to
 the version of Angular being used in examples and on-line documentation that you find. Most
 of the time, it won't matter very much, but there are times when something you find
 doesn't match what we're doing. If things seem odd, look at the versions for the
@@ -74,6 +76,10 @@ Before you start working you will need to install the dependencies for the clien
 
 ### Enable ESLint in VS Code
 
+> :warning: I (Nic) am not 100% sure that this will actually be an issue
+> for you. Please let me know if if is or it isn't (e.g., whether you
+> see the red "ESLINT" on the bottom bar).
+
 Since this is the first time we will be using ESLint there is an additional step to make sure the VS Code extension is working in the project. When you first open a TypeScript file you will see at the bottom right that ESLint is disabled.
 
 ![image](https://user-images.githubusercontent.com/1300395/107999308-bc59ec80-6fac-11eb-9784-75a471a50aa4.png)
@@ -91,19 +97,28 @@ You can also open this dialog with the following steps:
 
 ## Running your project
 
-* The **run** Gradle task (`./gradlew run` in the `server` directory) will still run your Javalin server, which is available at [`localhost:4567`](http://localhost:4567).
-* The **build** task will still _build_ the server, but not run it.
+To run your project you'll have to start _both_ the server and the
+client.
+
+### Starting the server
+
+- The **run** Gradle task (`./gradlew run` in the `server` directory) will still run your Javalin server, which is available at [`localhost:4567`](http://localhost:4567).
+- The **build** task will still _build_ the server, but not run it.
+- The **test** task will run all the JUnit tests.
+- The **check** task will run Checkstyle along with the JUnit tests.
 
 The major difference here is that the _client_ side of your project is,
 effectively, an entirely separate project from your Javalin server. We've included a full API
-for the todos, which you implemented in lab 2, so there is no need to copy your old project over.
+for the todos, which you implemented in Lab 2, so there is no need to copy your old project over.
 
 > We don't expect you to have any reason to actually make _any_ changes on the
 > server side of the project, although you're welcome to look it over and ask questions
 > about it. We don't really "object" if you make changes to the server code, but
-> you should probably think twice about doing it. If you think you're "fixing"
+> you should probably think twice about doing it. **If you think you're "fixing"
 > something by changing the server code, there's a good chance the problem isn't
-> where you think it is.
+> where you think it is.**
+
+### Starting the client
 
 Once you have successfully run `npm install`, in order to serve up the _client side_ of your project, you will run
 `ng serve` (from the `client` directory as well). This will trigger the various tools in the
@@ -113,9 +128,10 @@ application on their own little web-server, available by default at [`localhost:
 To recap, **here are the steps needed to _run_ the project**:
 
 1. Go into the `server` directory and enter `./gradlew run`.
-2. In a _different_ terminal, go into the `client` directory and enter `ng server`.
-3. You can then go to `localhost:4200` in your favorite web browser and see
-   your nifty Angular app.
+2. In a _different_ terminal (or terminal tab), go into the `client`
+   directory and enter `ng server`.
+3. You can then go to `localhost:4200` in your favorite web browser
+   and see your nifty Angular app.
 
 ## Testing and Continuous Integration
 
@@ -129,16 +145,20 @@ There are now more testing options! You can test the client, or the server or bo
 
 From the `client` directory:
 
-* `ng test` runs the client tests
-  * This will pop up a Chrome window with the results of the tests.
-  * This will run "forever", updating both in your terminal and in the Chrome
-    window that gets generated. Typing CTRL-C in the terminal window will end
+- `ng test` runs the client unit (Karma) tests
+  - This will pop up a Chrome window with the results of the tests.
+  - This will run "forever", re-running the tests whenever you make a
+    change. Both in your terminal and the Chrome
+    window will display updated results whenever the tests are re-run. Typing CTRL-C in the terminal window will end
     the `ng test` process and close the generated Chrome window.
-  * You can add `ng test --watch=false` if you just want to run the tests once
+- You can add `ng test --no-watch` if you just want to run the tests once
     instead of going into the "run forever" mode.
-* `ng test --code-coverage` runs the client tests and generates a coverage report
-  * It generates a coverage report you can find in your client directory `client/coverage/client/index.html`.
-  * Right click on `index.html` and select `Copy path` and paste it into your browser of choice. You can also drag and drop `index.html` onto the tab area of your browser and it will open it.
+- `ng test --code-coverage` runs the client tests and generates a coverage report
+  - It generates a coverage report in your client directory: `client/coverage/client/index.html`.
+  - Right click on `index.html` and select `Copy path` and paste it into your browser of choice. You can also drag and drop `index.html` onto the tab area of your browser and it will open it.
+- You can combine these with things like
+  `ng test --no-watch --code-coverage` to run the tests once and
+  compute the test coverage stats.
 
 #### Linting the client
 
@@ -148,10 +168,10 @@ We have included a tool called ESLint which helps analyze the code and catch var
 
 From the `server` directory:
 
-* `./gradlew test` runs the server tests once.
-  * It generates a report you can find in `server/build/reports/tests/test/index.html`.
-* `./gradlew test jacocoTestReport` runs the server tests once and creates a coverage report
-  * It generates a coverage report you can find in `server/build/jacocoHtml/index.html` in addition to the regular report generated by the `test` task.
+- `./gradlew test` runs the server tests once.
+  - It generates a report you can find in `server/build/reports/tests/test/index.html`.
+- `./gradlew test jacocoTestReport` runs the server tests once and creates a coverage report
+  - It generates a coverage report you can find in `server/build/jacocoHtml/index.html` in addition to the regular report generated by the `test` task.
 
 ### End to end testing with Cypress
 
@@ -159,13 +179,15 @@ End to end (E2E) testing involves the whole software stack rather than one part 
 
 We use [Cypress](https://www.cypress.io/) for our end-to-end tests. There are a few ways to run the E2E tests. They are all started from the `client` directory and require the server be running at the same time (`./gradlew run` in the `server` directory).
 
-* `ng e2e` both builds and serves the client and runs through all the Cypress end-to-end tests once.
-* `ng e2e --watch` builds and serves the client but just opens Cypress for you to be able to run the tests you want without closing automatically.
-  * This is the same as running `ng serve` and `npm run cy:open` (or `npx cypress open`) at the same time. If you are already running `ng serve` it will be easier to do this rather than closing it and running `ng e2e`.
+- `ng e2e` both builds and serves the client and runs through all the Cypress end-to-end tests once.
+- `ng e2e --watch` builds and serves the client but just opens Cypress for you to be able to run the tests you want without closing automatically.
+  - This is the same as running `ng serve` followed by `npm run cy:open` (or `npx cypress open`). If you are already running `ng serve` it will be easier to do this rather than closing it and running `ng e2e`.
 
-> When Nic ran the current version of Cypress for the first time popped up a
-> (macOS) "validation" check. This timed out and failed the first time, but when
-> he ran it again it worked fine the second time.
+> If you're running this on a Mac, macOS will run a validation check
+> the first time you run a given version of Cypress. This takes a while
+> and causes the tests to time and and fail. The system will only run
+> the validation once (for a given version of Cypress), though, so if
+> you run the tests again they should work.
 
 The main page of Cypress looks like this:
 
@@ -181,9 +203,9 @@ There are a lot of neat things you can do here like inspect each test and find w
 
 There are three GitHub Actions workflows set up in your repo:
 
-* [Server Java](../../actions?query=workflow%3A"Server+Java") - JUnit tests for the server (`gradle-build`)
-* [Client Angular](../../actions?query=workflow%3A"Client+Angular") - Karma tests (`ng-test`) and ESLint linting (`ng-lint`) for the client
-* [End to End](../../actions?query=workflow%3AEnd-to-End) - Cypress tests for end-to-end testing
+- [Server Java](../../actions?query=workflow%3A"Server+Java") - JUnit tests for the server (`gradle-build`)
+- [Client Angular](../../actions?query=workflow%3A"Client+Angular") - Karma tests (`ng-test`) and ESLint linting (`ng-lint`) for the client
+- [End to End](../../actions?query=workflow%3AEnd-to-End) - Cypress tests for end-to-end testing
 
 There are badges above that show the status of these checks on the master branch.
 
@@ -191,16 +213,16 @@ There are badges above that show the status of these checks on the master branch
 
 ### Angular
 
-* [Angular Unit Testing (Karma)](https://angular.io/guide/testing)
-* [Angular Routing](https://angular.io/guide/router)
-* [Angular Forms](https://angular.io/guide/forms-overview)
-* [Angular Material](https://material.angular.io/)
-* [What are environments in Angular](https://angular.io/guide/build#configuring-application-environments)
-* [Angular CLI](https://angular.io/cli)
+- [Angular Unit Testing (Karma)](https://angular.io/guide/testing)
+- [Angular Routing](https://angular.io/guide/router)
+- [Angular Forms](https://angular.io/guide/forms-overview)
+- [Angular Material](https://material.angular.io/)
+- [What are environments in Angular](https://angular.io/guide/build#configuring-application-environments)
+- [Angular CLI](https://angular.io/cli)
 
 ### Cypress (end-to-end testing)
 
-* [Cypress Docs](https://docs.cypress.io/)
-* [Cypress Best Practices](https://docs.cypress.io/guides/references/best-practices.html)
-* [Introduction to Cypress](https://docs.cypress.io/guides/core-concepts/introduction-to-cypress.html#Cypress-Can-Be-Simple-Sometimes)
-* [Interacting with Elements in Cypress](https://docs.cypress.io/guides/core-concepts/interacting-with-elements.html#Actionability)
+- [Cypress Docs](https://docs.cypress.io/)
+- [Cypress Best Practices](https://docs.cypress.io/guides/references/best-practices.html)
+- [Introduction to Cypress](https://docs.cypress.io/guides/core-concepts/introduction-to-cypress.html)
+- [Interacting with Elements in Cypress](https://docs.cypress.io/guides/core-concepts/interacting-with-elements.html)

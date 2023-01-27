@@ -17,13 +17,13 @@ describe('User list', () => {
     cy.get('#user-name-input').type('Lynn Ferguson');
 
     // All of the user cards should have the name we are filtering by
-    page.getUserCards().each(e => {
-      cy.wrap(e).find('.user-card-name').should('have.text', 'Lynn Ferguson');
+    page.getUserCards().each($card => {
+      cy.wrap($card).find('.user-card-name').should('have.text', 'Lynn Ferguson');
     });
 
     // (We check this two ways to show multiple ways to check this)
-    page.getUserCards().find('.user-card-name').each($el =>
-      expect($el.text()).to.equal('Lynn Ferguson')
+    page.getUserCards().find('.user-card-name').each($name =>
+      expect($name.text()).to.equal('Lynn Ferguson')
     );
   });
 
@@ -95,8 +95,8 @@ describe('User list', () => {
     page.getUserListItems().should('exist');
 
     // All of the user list items that show should have the role we are looking for
-    page.getUserListItems().each(e => {
-      cy.wrap(e).find('.user-list-role').should('have.text', ' viewer '); // this seems fragile since the spaces are expected
+    page.getUserListItems().each($user => {
+      cy.wrap($user).find('.user-list-role').should('have.text', ' viewer '); // this seems fragile since the spaces are expected
     });
   });
 

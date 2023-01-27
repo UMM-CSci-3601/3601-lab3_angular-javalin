@@ -4,7 +4,7 @@
 - [Exploring the client](#exploring-the-client)
 - [Todo API: Redux](#todo-api-redux)
 - [Writing (and testing) a beautiful client side application](#writing-and-testing-a-beautiful-client-side-application)
-- [Remember to test!](#remember-to-test)
+- [Remember to test](#remember-to-test)
 - [Questions](#questions)
 
 ## Notations
@@ -37,13 +37,13 @@ The testing is handled in two new places:
 
 ![Location of testing code](https://user-images.githubusercontent.com/302297/108024936-25605500-6feb-11eb-87e5-829d4e9de44a.png)
 
-The starting code includes several interesting
+The starting code includes several
 ways of using Angular components to display user data.
-It includes two ways of organizing the user-list information:
+It includes two ways of organizing the `user-list` information:
 a list and a grid.
-The grid approach to organizing the user-list information
-leverages a user-card component.
-The user-card component is also used (in a slightly different way) in the user-profile component.
+The grid approach to organizing the `user-list` information
+leverages a `user-card` component.
+The `user-card` component is also used (in a slightly different way) in the `user-profile` component.
 Karma tests for each component are named
 almost the same as the component but include `.spec` before the `.ts`,
 and Cypress E2E tests for user-list
@@ -83,7 +83,7 @@ this data.
 
 :question: Answer Question 5 about your filtering in [QUESTIONS](#questions)
 
-## Remember to test!
+## Remember to test
 
 Your project should have tests
 that help you meaningfully practice using continuous integration. You should expand on these tests as
@@ -91,18 +91,18 @@ appropriate so that your GitHub Actions checks are telling you valuable things
 about the health of your project.
 
 - As you work, create a branch for a new feature,
-  write unit tests for the new Angular components you are adding and using (Karma),
-  write new end-to-end tests for the new views (Cypress),
-  and address failing builds.
+  write unit tests (Karma) for the new Angular components and services you are adding and using,
+  write new end-to-end tests (Cypress) for the new views,
+  and address failing tests.
 - Use pull requests to review code and
-  merge things into master when a feature is working
+  merge things into `main` when a feature is working
   and is tested (with passing tests and decent coverage).
 
 In general you'll want to write unit tests (using Karma) for small, focus
 bits of logic, often in an Angular service, but sometimes in a component.
 
 E2E tests, on the other hand, are typically used to capture the desired
-behavior of specific features or stories.
+_functional_ behavior of specific features or stories.
 
 :question: Answer Questions 6 and 7 about your Karma and E2E tests in [QUESTIONS](#questions)
 
@@ -114,7 +114,7 @@ behavior of specific features or stories.
    - What are the "paths" in each case? (Be specific.)
    - Trace through an example of a path being handled by both Angular and Javalin.
      - Where does the "path" come from? As a user, how might I enter or trigger a particular path?
-     - What kinds of things to Angular and Javalin map their paths _to_? (Be specific.)
+     - What kinds of things do Angular and Javalin map their paths _to_? (Be specific.)
      - What do those targets "do" with that path?
 2. :question: What does the `user.service.ts` do? Why is it not just done in
    the `user-list.component.ts`?
@@ -139,7 +139,7 @@ behavior of specific features or stories.
    write a unit test (with Karma) for?
    1. :question: Why did you choose to test that piece of functionality?
    2. :question: What is the "it" for that test, i.e., what Angular tool/method are you testing?
-7. :question: List the behaviors you tested via your E2E tests? For each behavior:
+7. :question: List the behaviors you tested via your E2E tests. For each behavior:
    1. :question: Why did you test that particular behavior?
    2. :question: What is the "it" for that test, i.e., what part of the web app are you
       testing? (You don't need to tell us how the test _works_ since your code will do that.)
