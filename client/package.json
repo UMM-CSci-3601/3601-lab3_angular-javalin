@@ -37,7 +37,7 @@
     "@angular/cli": "~13.2.1",
     "@angular/compiler-cli": "~13.2.1",
     "@angular/language-service": "~13.2.1",
-    "@nrwl/cypress": "^13.7.2",
+    "@nrwl/cypress": "^15.6.3",
     "@nrwl/workspace": "^13.7.3",
     "@types/jasmine": "^4.3.1",
     "@types/jasminewd2": "~2.0.10",
