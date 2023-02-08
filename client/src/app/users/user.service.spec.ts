@@ -198,29 +198,39 @@ describe('UserService', () => {
   });
 
   describe('When getUserByID() is given an ID', () => {
-    it('calls api/users/id with the correct ID', () => {
+    it('calls api/users/id with the correct ID', waitForAsync(() => {
       // We're just picking a User "at random" from our little
       // set of Users up at the top.
       const targetUser: User = testUsers[1];
       const targetId: string = targetUser._id;
 
-      userService.getUserById(targetId).subscribe(
+      // Mock the `httpClient.get()` method so that instead of making an HTTP request
+      // it just returns our test data
+      const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(targetUser));
+
+      // Call `userService.getUser()` and confirm that the correct call has
+      // been made with the correct arguments.
+      //
+      // We have to `subscribe()` to the `Observable` returned by `getUserById()`.
+      // The `user` argument in the function below is the thing of type User returned by
+      // the call to `getUserById()`.
+      userService.getUserById(targetId).subscribe((user: User) => {
+        // The `User` returned by `getUserById()` should be targetUser.
         // This `expect` doesn't do a _whole_ lot.
-        // Since the `targetUser`
-        // is what the mock `HttpClient` returns in the
-        // `req.flush(targetUser)` line below, this
-        // really just confirms that `getUserById()`
+        // This really just confirms that `getUserById()`
         // doesn't in some way modify the user it
         // gets back from the server.
-        user => expect(user).toBe(targetUser)
-      );
-
-      const expectedUrl: string = userService.userUrl + '/' + targetId;
-      const req = httpTestingController.expectOne(expectedUrl);
-      expect(req.request.method).toEqual('GET');
-
-      req.flush(targetUser);
-    });
+        expect(user)
+          .withContext('expected user')
+          .toBe(targetUser);
+        expect(mockedMethod)
+          .withContext('one call')
+          .toHaveBeenCalledTimes(1);
+        expect(mockedMethod)
+          .withContext('talks to the correct endpoint')
+          .toHaveBeenCalledWith(userService.userUrl + '/' + targetId);
+      });
+    }));
   });
 
   describe('Filtering on the client using `filterUsers()` (Angular/Client filtering)', () => {
