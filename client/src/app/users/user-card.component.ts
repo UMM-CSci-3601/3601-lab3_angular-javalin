@@ -7,6 +7,10 @@ import { User } from './user';
   styleUrls: ['./user-card.component.scss']
 })
 export class UserCardComponent {
+
   @Input() user: User;
-  @Input() simple?: boolean = false;
+  @Input() simple ? = false;
+
+  constructor() { }
+
 }

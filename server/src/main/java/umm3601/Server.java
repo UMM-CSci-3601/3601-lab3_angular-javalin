@@ -3,7 +3,7 @@ package umm3601;
 import java.io.IOException;
 
 import io.javalin.Javalin;
-import io.javalin.core.util.RouteOverviewPlugin;
+import io.javalin.plugin.bundled.RouteOverviewPlugin;
 import io.javalin.http.InternalServerErrorResponse;
 import umm3601.user.UserDatabase;
 import umm3601.user.UserController;
@@ -12,7 +12,7 @@ import umm3601.todo.TodoController;
 
 public class Server {
 
-  private static final int PORT_NUMBER = 4567;
+  private static final int SERVER_PORT = 4567;
   public static final String USER_DATA_FILE = "/users.json";
   public static final String TODO_DATA_FILE = "/todos.json";
 
@@ -27,9 +27,9 @@ public class Server {
         // This sets things up so that the path "/api" will
         // return an overview of the various paths that this
         // Javalin server supports.
-        config.registerPlugin(new RouteOverviewPlugin("/api"));
+        config.plugins.register(new RouteOverviewPlugin("/api"));
       }
-    ).start(PORT_NUMBER);
+    ).start(SERVER_PORT);
 
     // API endpoints
 

@@ -14,7 +14,7 @@ describe('User list', () => {
 
   it('Should type something in the name filter and check that it returned correct elements', () => {
     // Filter for user 'Lynn Ferguson'
-    cy.get('#user-name-input').type('Lynn Ferguson');
+    cy.get('[data-test=userNameInput]').type('Lynn Ferguson');
 
     // All of the user cards should have the name we are filtering by
     page.getUserCards().each($card => {
@@ -29,7 +29,9 @@ describe('User list', () => {
 
   it('Should type something in the company filter and check that it returned correct elements', () => {
     // Filter for company 'OHMNET'
-    cy.get('#user-company-input').type('OHMNET');
+    cy.get('[data-test=userCompanyInput]').type('OHMNET');
+
+    page.getUserCards().should('have.lengthOf.above', 0);
 
     // All of the user cards should have the company we are filtering by
     page.getUserCards().find('.user-card-company').each($card => {
@@ -39,21 +41,21 @@ describe('User list', () => {
 
   it('Should type something partial in the company filter and check that it returned correct elements', () => {
     // Filter for companies that contain 'ti'
-    cy.get('#user-company-input').type('ti');
+    cy.get('[data-test=userCompanyInput]').type('ti');
 
-    // Go through each of the cards that are being shown and get the companies
-    page.getUserCards().find('.user-card-company')
-      // We should see these companies
-      .should('contain.text', 'MOMENTIA')
-      .should('contain.text', 'KINETICUT')
-      // We shouldn't see these companies
-      .should('not.contain.text', 'DATAGENE')
-      .should('not.contain.text', 'OHMNET');
+    page.getUserCards().should('have.lengthOf', 2);
+
+    // Each user card's company name should include the text we are filtering by
+    page.getUserCards().each(e => {
+      cy.wrap(e).find('.user-card-company').should('include.text', 'TI');
+    });
   });
 
   it('Should type something in the age filter and check that it returned correct elements', () => {
     // Filter for users of age '27'
-    cy.get('#user-age-input').type('27');
+    cy.get('[data-test=userAgeInput]').type('27');
+
+    page.getUserCards().should('have.lengthOf', 3);
 
     // Go through each of the cards that are being shown and get the names
     page.getUserCards().find('.user-card-name')
@@ -92,11 +94,11 @@ describe('User list', () => {
     page.changeView('list');
 
     // Some of the users should be listed
-    page.getUserListItems().should('exist');
+    page.getUserListItems().should('have.lengthOf.above', 0);
 
     // All of the user list items that show should have the role we are looking for
     page.getUserListItems().each($user => {
-      cy.wrap($user).find('.user-list-role').should('have.text', ' viewer '); // this seems fragile since the spaces are expected
+      cy.wrap($user).find('.user-list-role').should('contain', 'viewer');
     });
   });
 

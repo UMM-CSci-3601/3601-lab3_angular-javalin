@@ -1,3 +1,5 @@
+import { UserRole } from 'src/app/users/user';
+
 export class UserListPage {
   navigateTo() {
     return cy.visit('/users');
@@ -54,7 +56,7 @@ export class UserListPage {
    * @param viewType Which view type to change to: "card" or "list".
    */
   changeView(viewType: 'card' | 'list') {
-    return cy.get(`[data-test=viewTypeRadio] .mat-radio-button[value="${viewType}"]`).click();
+    return cy.get(`[data-test=viewTypeRadio] mat-radio-button[value="${viewType}"]`).click();
   }
 
   /**
@@ -62,7 +64,11 @@ export class UserListPage {
    *
    * @param value The role *value* to select, this is what's found in the mat-option "value" attribute.
    */
-  selectRole(value: string) {
-    return cy.get('[data-test=userRoleSelect]').click().get(`mat-option[value="${value}"]`).click();
+  selectRole(value: UserRole) {
+    // Find and click the drop down
+    return cy.get('[data-test=userRoleSelect]').click()
+      // Select and click the desired value from the resulting menu
+      .get(`mat-option[value="${value}"]`).click();
+      // NOTE: THIS CHAINING MIGHT BE FRAGILE (due to a 'click' followed by a 'get')
   }
 }

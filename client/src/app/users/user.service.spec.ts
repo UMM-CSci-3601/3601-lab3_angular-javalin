@@ -164,7 +164,6 @@ describe('UserService', () => {
             .withContext('talks to the correct endpoint')
             .toHaveBeenCalledWith(userService.userUrl, { params: new HttpParams().set('age', '25') });
         });
-      });
 
       it('correctly calls api/users with multiple filter parameters', () => {
         const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(testUsers));

@@ -1,4 +1,4 @@
-# CSCI 3601 Lab #3 - Angular and Spark Lab <!-- omit in toc -->
+# CSCI 3601 Lab #3 - Angular and Javalin Lab <!-- omit in toc -->
 
 [![Server Build Status](../../actions/workflows/server-gradle.yml/badge.svg)](../../actions/workflows/server-gradle.yml)
 [![Client Build Status](../../actions/workflows/client-angular.yaml/badge.svg)](../../actions/workflows/client-angular.yaml)

@@ -18,7 +18,7 @@ import org.mockito.ArgumentCaptor;
 
 import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
-import io.javalin.http.HttpCode;
+import io.javalin.http.HttpStatus;
 import io.javalin.http.NotFoundResponse;
 import umm3601.Server;
 
@@ -44,8 +44,6 @@ public class TodoControllerSpec {
 
   @BeforeEach
   public void setUp() throws IOException {
-    ctx.clearCookieStore();
-
     db = new TodoDatabase(Server.TODO_DATA_FILE);
     todoController = new TodoController(db);
   }
@@ -136,7 +134,7 @@ public class TodoControllerSpec {
   public void canGetTodoWithSpecifiedId() throws IOException {
     when(ctx.pathParam("id")).thenReturn("58895985a22c04e761776d54");
     todoController.getTodo(ctx);
-    verify(ctx).status(HttpCode.OK);
+    verify(ctx).status(HttpStatus.OK);
   }
 
   @Test

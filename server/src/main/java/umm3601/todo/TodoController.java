@@ -1,7 +1,7 @@
 package umm3601.todo;
 
 import io.javalin.http.Context;
-import io.javalin.http.HttpCode;
+import io.javalin.http.HttpStatus;
 import io.javalin.http.NotFoundResponse;
 
 /**
@@ -34,7 +34,7 @@ public class TodoController {
     Todo todo = todoDatabase.getTodo(id);
     if (todo != null) {
       ctx.json(todo);
-      ctx.status(HttpCode.OK);
+      ctx.status(HttpStatus.OK);
     } else {
       throw new NotFoundResponse("No todo with id " + id + " was found.");
     }
