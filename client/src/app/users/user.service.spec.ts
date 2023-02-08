@@ -60,9 +60,8 @@ describe('UserService', () => {
     httpTestingController.verify();
   });
 
-  describe('Testing user.service.ts `getUsers()`', () => {
-
-    it('calls `api/users` when `getUsers()` is called with no parameters', waitForAsync(() => {
+  describe('When getUsers() is called with no parameters', () => {
+    it('calls `api/users`', waitForAsync(() => {
       // Mock the `httpClient.get()` method, so that instead of making an HTTP request,
       // it just returns our test data.
       const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(testUsers));
@@ -92,26 +91,27 @@ describe('UserService', () => {
           .toHaveBeenCalledWith(userService.userUrl, { params: new HttpParams() });
       });
     }));
+  });
 
-    describe('Calling getUsers() with parameters correctly forms the HTTP request (Javalin/Server filtering)', () => {
-      /*
-       * We really don't care what `getUsers()` returns in the cases
-       * where the filtering is happening on the server. Since all the
-       * filtering is happening on the server, `getUsers()` is really
-       * just a "pass through" that returns whatever it receives, without
-       * any "post processing" or manipulation. So the tests in this
-       * `describe` block all confirm that the HTTP request is properly formed
-       * and sent out in the world, but don't _really_ care about
-       * what `getUsers()` returns as long as it's what the HTTP
-       * request returns.
-       *
-       * So in each of these tests, we'll keep it simple and have
-       * the (mocked) HTTP request return the entire list `testUsers`
-       * even though in "real life" we would expect the server to
-       * return return a filtered subset of the users.
-       */
+  describe('When getUsers() is called with parameters, it correctly forms the HTTP request (Javalin/Server filtering)', () => {
+    /*
+    * We really don't care what `getUsers()` returns in the cases
+    * where the filtering is happening on the server. Since all the
+    * filtering is happening on the server, `getUsers()` is really
+    * just a "pass through" that returns whatever it receives, without
+    * any "post processing" or manipulation. So the tests in this
+    * `describe` block all confirm that the HTTP request is properly formed
+    * and sent out in the world, but don't _really_ care about
+    * what `getUsers()` returns as long as it's what the HTTP
+    * request returns.
+    *
+    * So in each of these tests, we'll keep it simple and have
+    * the (mocked) HTTP request return the entire list `testUsers`
+    * even though in "real life" we would expect the server to
+    * return return a filtered subset of the users.
+    */
 
-      it('correctly calls api/users with filter parameter \'admin\'', () => {
+    it('correctly calls api/users with filter parameter \'admin\'', () => {
         const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(testUsers));
 
         userService.getUsers({ role: 'admin' }).subscribe((users: User[]) => {
@@ -133,25 +133,25 @@ describe('UserService', () => {
             .withContext('talks to the correct endpoint')
             .toHaveBeenCalledWith(userService.userUrl, { params: new HttpParams().set('role', 'admin') });
         });
+    });
+
+    it('correctly calls api/users with filter parameter \'age\'', () => {
+      const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(testUsers));
+
+      userService.getUsers({ age: 25 }).subscribe((users: User[]) => {
+        expect(users)
+          .withContext('expected users')
+          .toEqual(testUsers);
+        expect(mockedMethod)
+          .withContext('one call')
+          .toHaveBeenCalledTimes(1);
+        expect(mockedMethod)
+          .withContext('talks to the correct endpoint')
+          .toHaveBeenCalledWith(userService.userUrl, { params: new HttpParams().set('age', '25') });
       });
+    });
 
-      it('correctly calls api/users with filter parameter \'age\'', () => {
-        const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(testUsers));
-
-        userService.getUsers({ age: 25 }).subscribe((users: User[]) => {
-          expect(users)
-            .withContext('expected users')
-            .toEqual(testUsers);
-          expect(mockedMethod)
-            .withContext('one call')
-            .toHaveBeenCalledTimes(1);
-          expect(mockedMethod)
-            .withContext('talks to the correct endpoint')
-            .toHaveBeenCalledWith(userService.userUrl, { params: new HttpParams().set('age', '25') });
-        });
-      });
-
-      it('correctly calls api/users with multiple filter parameters', () => {
+    it('correctly calls api/users with multiple filter parameters', () => {
         const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(testUsers));
 
         userService.getUsers({ role: 'editor', company: 'IBM', age: 37 }).subscribe((users: User[]) => {
@@ -194,10 +194,10 @@ describe('UserService', () => {
             .withContext('age being 37')
             .toEqual('37');
         });
-      });
     });
+  });
 
-    describe('getUserByID()', () => {
+  describe('When getUserByID() is given an ID', () => {
     it('calls api/users/id with the correct ID', () => {
       // We're just picking a User "at random" from our little
       // set of Users up at the top.
@@ -221,9 +221,9 @@ describe('UserService', () => {
 
       req.flush(targetUser);
     });
-    });
+  });
 
-    describe('Filtering on the client using `filterUsers()` (Angular/Client filtering)', () => {
+  describe('Filtering on the client using `filterUsers()` (Angular/Client filtering)', () => {
     /*
      * Since `filterUsers` actually filters "locally" (in
      * Angular instead of on the server), we do want to
@@ -273,6 +273,6 @@ describe('UserService', () => {
         expect(user.company.indexOf(userCompany)).toBeGreaterThanOrEqual(0);
       });
     });
-    });
   });
+
 });
