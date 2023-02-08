@@ -5,19 +5,6 @@ import { defer, of } from 'rxjs';
 import { User } from './user';
 import { UserService } from './user.service';
 
-/**
- * Create async observable that emits-once and completes
- * after a JS engine turn.
- */
-// This was lifted from https://stackoverflow.com/a/52959047
-// Not sure why ESLint is grumpy about it, but it should be moved
-// to some sort of utility location since it would presumably
-// be needed in many places if we go this direction. -- Nic
-// eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-function asyncData<T>(data: T) {
-  return defer(() => Promise.resolve(data));
-}
-
 describe('UserService', () => {
   // A small collection of test users
   const testUsers: User[] = [
@@ -73,7 +60,7 @@ describe('UserService', () => {
     httpTestingController.verify();
   });
 
-  describe('getUsers()', () => {
+  describe('Testing user.service.ts `getUsers()`', () => {
 
     it('calls `api/users` when `getUsers()` is called with no parameters', waitForAsync(() => {
       // Mock the `httpClient.get()` method, so that instead of making an HTTP request,
@@ -106,7 +93,7 @@ describe('UserService', () => {
       });
     }));
 
-    describe('Calling getUsers() with parameters correctly forms the HTTP request', () => {
+    describe('Calling getUsers() with parameters correctly forms the HTTP request (Javalin/Server filtering)', () => {
       /*
        * We really don't care what `getUsers()` returns in the cases
        * where the filtering is happening on the server. Since all the
@@ -162,6 +149,7 @@ describe('UserService', () => {
             .withContext('talks to the correct endpoint')
             .toHaveBeenCalledWith(userService.userUrl, { params: new HttpParams().set('age', '25') });
         });
+      });
 
       it('correctly calls api/users with multiple filter parameters', () => {
         const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(testUsers));
@@ -208,9 +196,8 @@ describe('UserService', () => {
         });
       });
     });
-  });
 
-  describe('getUserByID()', () => {
+    describe('getUserByID()', () => {
     it('calls api/users/id with the correct ID', () => {
       // We're just picking a User "at random" from our little
       // set of Users up at the top.
@@ -234,9 +221,9 @@ describe('UserService', () => {
 
       req.flush(targetUser);
     });
-  });
+    });
 
-  describe('filterUsers()', () => {
+    describe('Filtering on the client using `filterUsers()` (Angular/Client filtering)', () => {
     /*
      * Since `filterUsers` actually filters "locally" (in
      * Angular instead of on the server), we do want to
@@ -285,6 +272,7 @@ describe('UserService', () => {
         expect(user.name.indexOf(userName)).toBeGreaterThanOrEqual(0);
         expect(user.company.indexOf(userCompany)).toBeGreaterThanOrEqual(0);
       });
+    });
     });
   });
 });
