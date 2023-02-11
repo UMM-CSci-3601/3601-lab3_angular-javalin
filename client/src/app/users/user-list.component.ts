@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { User, UserRole } from './user';
 import { UserService } from './user.service';
+import { Subscription } from 'rxjs';
 
 /**
  * A component that displays a list of users, either as a grid
@@ -19,7 +20,7 @@ import { UserService } from './user.service';
   styleUrls: ['./user-list.component.scss'],
   providers: []
 })
-export class UserListComponent implements OnInit {
+export class UserListComponent implements OnInit, OnDestroy {
   // These are public so that tests can reference them (.spec.ts)
   public serverFilteredUsers: User[];
   public filteredUsers: User[];
@@ -29,6 +30,7 @@ export class UserListComponent implements OnInit {
   public userRole: UserRole;
   public userCompany: string;
   public viewType: 'card' | 'list' = 'card';
+  getUsersSubscription: Subscription;
 
   /**
    * This constructor injects both an instance of `UserService`
@@ -45,27 +47,37 @@ export class UserListComponent implements OnInit {
    * Get the users from the server, filtered by the role and age specified
    * in the GUI.
    */
-  getUsersFromServer() {
-    this.userService.getUsers({
+  getUsersFromServer(): void {
+    this.unsubscribeConditionally();
+    // A user-list-component has a getUsersSubscription (which is a subscription)
+    // that is paying attention to userService.getUsers (which is an Observable<User[]>)
+    // (for more on Observable, see: https://reactivex.io/documentation/observable.html)
+    // and we are specifically watching for role and age whenever the User[] gets updated
+    this.getUsersSubscription = this.userService.getUsers({
       role: this.userRole,
       age: this.userAge
-    }).subscribe(returnedUsers => {
-      // This inner function passed to `subscribe` will be called
-      // when the `Observable` returned by `getUsers()` has one
-      // or more values to return. `returnedUsers` will be the
-      // name for the array of `Users` we got back from the
-      // server.
-      this.serverFilteredUsers = returnedUsers;
-      this.updateFilter();
-    }, err => {
-      // If there was an error getting the users, log
-      // the problem and display a message.
-      console.error('We couldn\'t get the list of users; the server might be down');
-      this.snackBar.open(
-        'Problem contacting the server – try again',
-        'OK',
-        // The message will disappear after 3 seconds.
-        { duration: 3000 });
+    })
+    .subscribe({
+      // Next time we see a change in the Observable<User[]>,
+      // refer to that User[] as returnedUsers here and do the steps in the {}
+      next: (returnedUsers) => {
+        // First, update the array of serverFilteredUsers to be the User[] in the observable
+        this.serverFilteredUsers = returnedUsers;
+        // Then update the filters for our client-side filtering as described in this method
+        this.updateFilter();
+      },
+      // If we observe an error in that Observable, display info to the user
+      // and put it in the console so we can learn more
+      error: (e) => {
+        this.snackBar.open(
+          'Problem contacting the server – try again',
+          'OK',
+          // The message will disappear after 3 seconds.
+          { duration: 3000 });
+        console.error('We couldn\'t get the list of users; the server might be down');
+      },
+      // Once the observable has completed successfully
+      complete: () => console.log('Users were filtered on the server') //this WAS console.info, but that wasn't allowed here
     });
   }
 
@@ -85,4 +97,18 @@ export class UserListComponent implements OnInit {
   ngOnInit(): void {
     this.getUsersFromServer();
   }
+
+  ngOnDestroy(): void {
+    // When we destroy the user-list-component, unsubscribe from that Observable<User[]>
+    // This unsubscribing action allows the Observable to stop emitting events
+    // if we were the only ones paying attention (if all of the followers stop following, no need to tell us)
+    this.unsubscribeConditionally();
+  }
+
+  unsubscribeConditionally(): void {
+    if (this.getUsersSubscription) {
+      this.getUsersSubscription.unsubscribe();
+    }
+  }
+
 }
