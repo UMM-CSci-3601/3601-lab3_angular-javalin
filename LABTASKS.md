@@ -72,6 +72,7 @@ this data.
   - see returned todo items in a useful, meaningful way including:
     - choosing to limit the number of todos displayed
     - sorting the todos by various fields
+    - combinations of sorting, filtering, and limiting
 - Your new functionality should be contained in a 'todos' view,
   with a 'todo-list' component and probably a service.
   > Note: You do NOT need to have multiple views of your todos like we provided you for users, and you should feel free to try out a different kind of component that you think would work well to display todos. Think about what information you would want to actually _see_ about the todo to help you manage your tasks.
@@ -80,6 +81,7 @@ this data.
   the data is displayed.
   - You have to use Angular's filtering at least once
   - You have to use the server's filtering at least once
+  - You have to be able to use combinations of filters (implement and test this)
   - :question: Make note of why you choose to do each of those two things the way you did
 
 :question: Answer Question 5 about your filtering in [QUESTIONS](#questions)
