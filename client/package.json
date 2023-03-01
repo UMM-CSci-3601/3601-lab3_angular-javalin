@@ -46,7 +46,7 @@
     "cypress": "^12.5.1",
     "eslint": "^8.24.0",
     "eslint-plugin-import": "2.27.5",
-    "eslint-plugin-jsdoc": "^39.3.2",
+    "eslint-plugin-jsdoc": "^40.0.0",
     "eslint-plugin-prefer-arrow": "1.2.3",
     "jasmine-core": "^4.5.0",
     "jasmine-spec-reporter": "~7.0.0",
