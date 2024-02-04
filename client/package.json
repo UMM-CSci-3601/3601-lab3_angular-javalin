@@ -36,7 +36,7 @@
     "@angular-eslint/template-parser": "~16.3.1",
     "@angular/cli": "^16.2.12",
     "@angular/compiler-cli": "^16.2.12",
-    "@angular/language-service": "^16.2.12",
+    "@angular/language-service": "^17.1.2",
     "@cypress/schematic": "^2.5.1",
     "@floogulinc/cypress-mongo-seeder": "^1.1.1",
     "@types/jasmine": "^5.1.4",
