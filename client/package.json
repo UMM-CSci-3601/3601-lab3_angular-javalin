@@ -36,7 +36,7 @@
     "@angular-eslint/schematics": "~18.1.0",
     "@angular-eslint/template-parser": "~18.1.0",
     "@angular/cli": "^18.1.1",
-    "@angular/compiler-cli": "^18.1.1",
+    "@angular/compiler-cli": "^18.1.2",
     "@angular/language-service": "^18.1.1",
     "@cypress/schematic": "^2.5.1",
     "@floogulinc/cypress-mongo-seeder": "^1.1.1",
