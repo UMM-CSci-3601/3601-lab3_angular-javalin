@@ -25,4 +25,5 @@
       "todos"
     ],
     "angular.enable-experimental-ivy-prompt": false,
+    "editor.formatOnSave": true,
 }
