@@ -117,12 +117,16 @@ public class TodoControllerSpec {
     todoController.getTodos(ctx);
 
     // Confirm that `json` was called with all the users.
-    // The `ArgumentCaptor<Todo[]> todoArrayCaptor` was initialized in the `@BeforeEach`
-    // Here, we wait to see what happens when `ctx` calls the json method in the call
+    // The `ArgumentCaptor<Todo[]> todoArrayCaptor` was initialized in the
+    // `@BeforeEach`
+    // Here, we wait to see what happens when `ctx` calls the json method in the
+    // call
     // `todoController.getTodos(ctx)` and the `json()` method is passed a `Todo[]`
-    // (That's when the `Todo[]` that was passed as input to the json method is captured)
+    // (That's when the `Todo[]` that was passed as input to the json method is
+    // captured)
     verify(ctx).json(todoArrayCaptor.capture());
-    // Now that the `Todo[]` that was passed as input to the json method is captured,
+    // Now that the `Todo[]` that was passed as input to the json method is
+    // captured,
     // we can make assertions about it. In particular, we'll assert that its length
     // is the same as the size of the "database". We could also confirm that the
     // particular users are the same/correct, but that can get complicated
@@ -139,7 +143,7 @@ public class TodoControllerSpec {
   @Test
   public void canGetTodoByOwner() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("owner", Arrays.asList(new String[] {"Blanche"}));
+    queryParams.put("owner", Arrays.asList(new String[] { "Blanche" }));
     when(ctx.queryParamMap()).thenReturn(queryParams);
 
     todoController.getTodos(ctx);
@@ -160,7 +164,7 @@ public class TodoControllerSpec {
   @Test
   public void canGetTodosByStatusComplete() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("status", Arrays.asList(new String[] {"complete"}));
+    queryParams.put("status", Arrays.asList(new String[] { "complete" }));
     when(ctx.queryParamMap()).thenReturn(queryParams);
 
     todoController.getTodos(ctx);
@@ -181,12 +185,13 @@ public class TodoControllerSpec {
   @Test
   public void canGetTodosByStatusIncomplete() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("status", Arrays.asList(new String[] {"incomplete"}));
+    queryParams.put("status", Arrays.asList(new String[] { "incomplete" }));
     when(ctx.queryParamMap()).thenReturn(queryParams);
 
     todoController.getTodos(ctx);
 
-    // Confirm that all the todos passed to `json` have 'incomplete' as their status.
+    // Confirm that all the todos passed to `json` have 'incomplete' as their
+    // status.
     verify(ctx).json(todoArrayCaptor.capture());
     Todo[] todos = todoArrayCaptor.getValue();
     for (Todo todo : todos) {
@@ -201,7 +206,7 @@ public class TodoControllerSpec {
   @Test
   public void respondsAppropriatelyToIllegalStatus() {
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("status", Arrays.asList(new String[] {"invalidStatus"}));
+    queryParams.put("status", Arrays.asList(new String[] { "invalidStatus" }));
     when(ctx.queryParamMap()).thenReturn(queryParams);
     // This should now throw a `BadRequestResponse` exception because
     // our request has an illegal status value.
@@ -218,12 +223,13 @@ public class TodoControllerSpec {
   @Test
   public void canGetTodosByCategory() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("category", Arrays.asList(new String[] {"homework"}));
+    queryParams.put("category", Arrays.asList(new String[] { "homework" }));
     when(ctx.queryParamMap()).thenReturn(queryParams);
 
     todoController.getTodos(ctx);
 
-    // Confirm that all the todos passed to `json` have 'homework' as their category.
+    // Confirm that all the todos passed to `json` have 'homework' as their
+    // category.
     verify(ctx).json(todoArrayCaptor.capture());
     Todo[] todos = todoArrayCaptor.getValue();
     for (Todo todo : todos) {
@@ -239,7 +245,7 @@ public class TodoControllerSpec {
   @Test
   public void canGetTodosByBody() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("contains", Arrays.asList(new String[] {"tempor"}));
+    queryParams.put("contains", Arrays.asList(new String[] { "tempor" }));
     when(ctx.queryParamMap()).thenReturn(queryParams);
 
     todoController.getTodos(ctx);
@@ -255,13 +261,14 @@ public class TodoControllerSpec {
   /**
    * Confirm that `getTodos` works when we have a `limit` query parameter.
    *
-   * @throws IOException if there are problems reading from the JSON "database" file.
+   * @throws IOException if there are problems reading from the JSON "database"
+   *                     file.
    */
   @Test
   public void canLimitTo20Todos() throws IOException {
     // Add a query param map to the context that maps "limit" to 20.
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("limit", Arrays.asList(new String[] {"20"}));
+    queryParams.put("limit", Arrays.asList(new String[] { "20" }));
     when(ctx.queryParamMap()).thenReturn(queryParams);
 
     // Call the `getTodos` method on the mock controller with the
@@ -284,7 +291,7 @@ public class TodoControllerSpec {
     // We'll set the requested "limit" to be a string ("abc")
     // that can't be parsed to a number.
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("limit", Arrays.asList(new String[] {"abc"}));
+    queryParams.put("limit", Arrays.asList(new String[] { "abc" }));
 
     when(ctx.queryParamMap()).thenReturn(queryParams);
     // This should now throw a `BadRequestResponse` exception because
@@ -298,7 +305,7 @@ public class TodoControllerSpec {
   public void canGetTodosSortedByOwner() throws IOException {
 
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("orderBy", Arrays.asList(new String[] {"owner"}));
+    queryParams.put("orderBy", Arrays.asList(new String[] { "owner" }));
 
     when(ctx.queryParamMap()).thenReturn(queryParams);
     todoController.getTodos(ctx);
@@ -320,7 +327,7 @@ public class TodoControllerSpec {
   @Test
   public void canSortTodosByBody() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("orderBy", Arrays.asList(new String[] {"body"}));
+    queryParams.put("orderBy", Arrays.asList(new String[] { "body" }));
     when(ctx.queryParamMap()).thenReturn(queryParams);
 
     todoController.getTodos(ctx);
@@ -343,7 +350,7 @@ public class TodoControllerSpec {
   @Test
   public void canSortTodosByStatus() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("orderBy", Arrays.asList(new String[] {"status"}));
+    queryParams.put("orderBy", Arrays.asList(new String[] { "status" }));
     when(ctx.queryParamMap()).thenReturn(queryParams);
 
     todoController.getTodos(ctx);
@@ -367,7 +374,7 @@ public class TodoControllerSpec {
     // We'll set the requested "age" to be a string ("abc")
     // that can't be parsed to a number.
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("orderBy", Arrays.asList(new String[] {"unknown"}));
+    queryParams.put("orderBy", Arrays.asList(new String[] { "unknown" }));
 
     when(ctx.queryParamMap()).thenReturn(queryParams);
     // This should now throw a `BadRequestResponse` exception because
@@ -380,7 +387,7 @@ public class TodoControllerSpec {
   /**
    * Confirm that we handle multiple query parameters correctly.
    * For example:
-   *    `api/todos?owner=Blanche&status=complete&limit=12&orderBy=category`
+   * `api/todos?owner=Blanche&status=complete&limit=12&orderBy=category`
    * should give us the first 12 todos with status 'complete' and owner 'Blanche'
    * ordered by category.
    *
@@ -389,10 +396,10 @@ public class TodoControllerSpec {
   @Test
   public void canFilterByMultipleParameters() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("owner", Arrays.asList(new String[] {"Blanche"}));
-    queryParams.put("status", Arrays.asList(new String[] {"complete"}));
-    queryParams.put("limit", Arrays.asList(new String[] {"12"}));
-    queryParams.put("orderBy", Arrays.asList(new String[] {"category"}));
+    queryParams.put("owner", Arrays.asList(new String[] { "Blanche" }));
+    queryParams.put("status", Arrays.asList(new String[] { "complete" }));
+    queryParams.put("limit", Arrays.asList(new String[] { "12" }));
+    queryParams.put("orderBy", Arrays.asList(new String[] { "category" }));
     when(ctx.queryParamMap()).thenReturn(queryParams);
 
     todoController.getTodos(ctx);
