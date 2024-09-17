@@ -69,6 +69,7 @@ public class UserController implements Controller {
   public void getUsers(Context ctx) {
     User[] users = userDatabase.listUsers(ctx.queryParamMap());
     ctx.json(users);
+    ctx.status(HttpStatus.OK);
   }
 
   /**
