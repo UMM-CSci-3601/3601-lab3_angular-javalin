@@ -5,7 +5,6 @@ import java.util.Arrays;
 import io.javalin.Javalin;
 import io.javalin.http.InternalServerErrorResponse;
 import io.javalin.http.staticfiles.Location;
-import io.javalin.plugin.bundled.RouteOverviewPlugin;
 
 public class Server {
 
@@ -78,7 +77,7 @@ public class Server {
       // This adds a Javalin plugin that will list all of the
       // routes/endpoints that we add below on a page reachable
       // via the "/api" path.
-      config.plugins.register(new RouteOverviewPlugin("/api"));
+      config.bundledPlugins.enableRouteOverview("/api");
     });
 
     // This catches any uncaught exceptions thrown in the server
