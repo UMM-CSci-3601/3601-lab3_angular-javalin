@@ -224,10 +224,10 @@ _functional_ behavior of specific features or stories.
 3. Look over the the test for calling `getUsers()` with an `age` parameters in `client/src/app/users/user.service.spec.ts`.
    1. :question: Where do we tell the service that we want only users with age 25?
    1. :question: Where do we tell the mock HTTP system how many requests to expect and what
-     parameters those requests should have?
+      parameters those requests should have?
    1. :question: Where do we specify the expected HTTP request type (PUT or GET or DELETE or whatever)?
    1. :question: Where do we specify what value the mock HTTP system should return in response
-     to the expected request.
+      to the expected request.
 4. Look over the E2E test for testing the age filtering in `client/cypress/e2e/user-list.cy.ts`.
    1. :question: What is the `page` object? Where is that defined?
    1. :question: Where do we enter the value 27 in the age field?
