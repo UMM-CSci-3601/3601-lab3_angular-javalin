@@ -20,17 +20,13 @@ describe('App', () => {
   describe('Sidenav', () => {
     it('Should be invisible by default', () => {
       // Before clicking on the button, the sidenav should be hidden
-      page.getSidenav()
-        .should('be.hidden')
-        .and('not.be.visible');
+      page.getSidenav().should('be.hidden').and('not.be.visible');
     });
 
     it('Should be openable by clicking the sidenav button', () => {
       page.getSidenavButton().click();
 
-      page.getSidenav()
-        .should('not.be.hidden')
-        .and('be.visible');
+      page.getSidenav().should('not.be.hidden').and('be.visible');
     });
 
     it('Should have a working navigation to "Users"', () => {
@@ -42,7 +38,6 @@ describe('App', () => {
       cy.url().should('match', /.*\/users$/);
     });
 
-
     it('Should have a working navigation to "Home"', () => {
       page.getSidenavButton().click();
       // When we click the "Home" option in the side navbar…
@@ -51,5 +46,4 @@ describe('App', () => {
       cy.url().should('match', /.*\/$/);
     });
   });
-
 });
