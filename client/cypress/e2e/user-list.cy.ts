@@ -3,7 +3,6 @@ import { UserListPage } from '../support/user-list.po';
 const page = new UserListPage();
 
 describe('User list', () => {
-
   beforeEach(() => {
     page.navigateTo();
   });
@@ -26,9 +25,10 @@ describe('User list', () => {
     });
 
     // (We check this two ways to show multiple ways to check this)
-    page.getUserCards().find('.user-card-name').each($name =>
-      expect($name.text()).to.equal('Lynn Ferguson')
-    );
+    page
+      .getUserCards()
+      .find('.user-card-name')
+      .each($name => expect($name.text()).to.equal('Lynn Ferguson'));
   });
 
   it('Should type something in the company filter and check that it returned correct elements', () => {
@@ -38,9 +38,12 @@ describe('User list', () => {
     page.getUserCards().should('have.lengthOf.above', 0);
 
     // All of the user cards should have the company we are filtering by
-    page.getUserCards().find('.user-card-company').each($card => {
-      cy.wrap($card).should('have.text', 'OHMNET');
-    });
+    page
+      .getUserCards()
+      .find('.user-card-company')
+      .each($card => {
+        cy.wrap($card).should('have.text', 'OHMNET');
+      });
   });
 
   it('Should type something partial in the company filter and check that it returned correct elements', () => {
@@ -62,7 +65,9 @@ describe('User list', () => {
     page.getUserCards().should('have.lengthOf', 3);
 
     // Go through each of the cards that are being shown and get the names
-    page.getUserCards().find('.user-card-name')
+    page
+      .getUserCards()
+      .find('.user-card-name')
       // We should see these users whose age is 27
       .should('contain.text', 'Stokes Clayton')
       .should('contain.text', 'Bolton Monroe')
@@ -107,22 +112,24 @@ describe('User list', () => {
   });
 
   it('Should click view profile on a user and go to the right URL', () => {
-    page.getUserCards().first().then((card) => {
-      const firstUserName = card.find('.user-card-name').text();
-      const firstUserCompany = card.find('.user-card-company').text();
+    page
+      .getUserCards()
+      .first()
+      .then(card => {
+        const firstUserName = card.find('.user-card-name').text();
+        const firstUserCompany = card.find('.user-card-company').text();
 
-      // When the view profile button on the first user card is clicked, the URL should have a valid mongo ID
-      page.clickViewProfile(page.getUserCards().first());
+        // When the view profile button on the first user card is clicked, the URL should have a valid mongo ID
+        page.clickViewProfile(page.getUserCards().first());
 
-      // The URL should contain '/users/' (note the ending slash) and '/users/' should be followed by a mongo ID
-      cy.url()
-        .should('contain', '/users/')
-        .should('match', /.*\/users\/[0-9a-fA-F]{24}$/);
+        // The URL should contain '/users/' (note the ending slash) and '/users/' should be followed by a mongo ID
+        cy.url()
+          .should('contain', '/users/')
+          .should('match', /.*\/users\/[0-9a-fA-F]{24}$/);
 
-      // On this profile page we were sent to, the name and company should be correct
-      cy.get('.user-card-name').first().should('have.text', firstUserName);
-      cy.get('.user-card-company').first().should('have.text', firstUserCompany);
-    });
-   });
-
+        // On this profile page we were sent to, the name and company should be correct
+        cy.get('.user-card-name').first().should('have.text', firstUserName);
+        cy.get('.user-card-company').first().should('have.text', firstUserCompany);
+      });
+  });
 });

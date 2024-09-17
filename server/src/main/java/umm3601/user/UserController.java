@@ -28,7 +28,8 @@ public class UserController implements Controller {
     this.userDatabase = userDatabase;
   }
 
-  /**s
+  /**
+   * s
    * Create a database using the json file, use it as data source for a new
    * UserController
    *
@@ -69,6 +70,7 @@ public class UserController implements Controller {
   public void getUsers(Context ctx) {
     User[] users = userDatabase.listUsers(ctx.queryParamMap());
     ctx.json(users);
+    ctx.status(HttpStatus.OK);
   }
 
   /**

@@ -1,4 +1,4 @@
-import {seedAll} from '@floogulinc/cypress-mongo-seeder';
+import { seedAll } from '@floogulinc/cypress-mongo-seeder';
 // ***********************************************************
 // This example plugins/index.js can be used to load plugins
 //
@@ -24,7 +24,6 @@ const pluginConfig: Cypress.PluginConfig = (on, config) => {
   on('task', {
     'seed:database': (drop = true) => seedAll(mongoUri, dbSeedDir, drop),
   });
-
 };
 
 export default pluginConfig;

@@ -130,9 +130,10 @@
     <module name="MethodLength"/>
     <module name="ParameterNumber"/>
 
+    <!-- I commented all this out since Prettier is now managing the formatting for us. -->
     <!-- Checks for whitespace                               -->
     <!-- See https://checkstyle.org/config_whitespace.html -->
-    <module name="EmptyForIteratorPad"/>
+    <!-- <module name="EmptyForIteratorPad"/>
     <module name="GenericWhitespace"/>
     <module name="MethodParamPad"/>
     <module name="NoWhitespaceAfter"/>
@@ -141,7 +142,7 @@
     <module name="ParenPad"/>
     <module name="TypecastParenPad"/>
     <module name="WhitespaceAfter"/>
-    <module name="WhitespaceAround"/>
+    <module name="WhitespaceAround"/> -->
 
     <!-- Modifier Checks                                    -->
     <!-- See https://checkstyle.org/config_modifiers.html -->

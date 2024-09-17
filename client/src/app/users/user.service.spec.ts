@@ -14,7 +14,7 @@ describe('UserService', () => {
       company: 'UMM',
       email: 'chris@this.that',
       role: 'admin',
-      avatar: 'https://gravatar.com/avatar/8c9616d6cc5de638ea6920fb5d65fc6c?d=identicon'
+      avatar: 'https://gravatar.com/avatar/8c9616d6cc5de638ea6920fb5d65fc6c?d=identicon',
     },
     {
       _id: 'pat_id',
@@ -23,7 +23,7 @@ describe('UserService', () => {
       company: 'IBM',
       email: 'pat@something.com',
       role: 'editor',
-      avatar: 'https://gravatar.com/avatar/b42a11826c3bde672bce7e06ad729d44?d=identicon'
+      avatar: 'https://gravatar.com/avatar/b42a11826c3bde672bce7e06ad729d44?d=identicon',
     },
     {
       _id: 'jamie_id',
@@ -32,8 +32,8 @@ describe('UserService', () => {
       company: 'Frogs, Inc.',
       email: 'jamie@frogs.com',
       role: 'viewer',
-      avatar: 'https://gravatar.com/avatar/d4a6c71dd9470ad4cf58f78c100258bf?d=identicon'
-    }
+      avatar: 'https://gravatar.com/avatar/d4a6c71dd9470ad4cf58f78c100258bf?d=identicon',
+    },
   ];
   let userService: UserService;
   // These are used to mock the HTTP requests so that we (a) don't have to
@@ -45,9 +45,9 @@ describe('UserService', () => {
   beforeEach(() => {
     // Set up the mock handling of the HTTP requests
     TestBed.configureTestingModule({
-    imports: [],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-});
+      imports: [],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+    });
     httpClient = TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
     // Construct an instance of the service with the mock
@@ -61,7 +61,6 @@ describe('UserService', () => {
   });
 
   describe('getUsers()', () => {
-
     it('calls `api/users` when `getUsers()` is called with no parameters', () => {
       // Assert that the users we get from this call to getUsers()
       // should be our set of test users. Because we're subscribing
@@ -69,9 +68,7 @@ describe('UserService', () => {
       // checked until the mocked HTTP request 'returns' a response.
       // This happens when we call req.flush(testUsers) a few lines
       // down.
-      userService.getUsers().subscribe(
-        users => expect(users).toBe(testUsers)
-      );
+      userService.getUsers().subscribe(users => expect(users).toBe(testUsers));
 
       // Specify that (exactly) one request will be made to the specified URL.
       const req = httpTestingController.expectOne(userService.userUrl);
@@ -103,14 +100,12 @@ describe('UserService', () => {
        * return return a filtered subset of the users.
        */
 
-      it('correctly calls api/users with filter parameter \'admin\'', () => {
-        userService.getUsers({ role: 'admin' }).subscribe(
-          users => expect(users).toBe(testUsers)
-        );
+      it("correctly calls api/users with filter parameter 'admin'", () => {
+        userService.getUsers({ role: 'admin' }).subscribe(users => expect(users).toBe(testUsers));
 
         // Specify that (exactly) one request will be made to the specified URL with the role parameter.
         const req = httpTestingController.expectOne(
-          (request) => request.url.startsWith(userService.userUrl) && request.params.has('role')
+          request => request.url.startsWith(userService.userUrl) && request.params.has('role')
         );
 
         // Check that the request made to that URL was a GET request.
@@ -122,15 +117,12 @@ describe('UserService', () => {
         req.flush(testUsers);
       });
 
-      it('correctly calls api/users with filter parameter \'age\'', () => {
-
-        userService.getUsers({ age: 25 }).subscribe(
-          users => expect(users).toBe(testUsers)
-        );
+      it("correctly calls api/users with filter parameter 'age'", () => {
+        userService.getUsers({ age: 25 }).subscribe(users => expect(users).toBe(testUsers));
 
         // Specify that (exactly) one request will be made to the specified URL with the age parameter.
         const req = httpTestingController.expectOne(
-          (request) => request.url.startsWith(userService.userUrl) && request.params.has('age')
+          request => request.url.startsWith(userService.userUrl) && request.params.has('age')
         );
 
         // Check that the request made to that URL was a GET request.
@@ -143,15 +135,17 @@ describe('UserService', () => {
       });
 
       it('correctly calls api/users with multiple filter parameters', () => {
-
-        userService.getUsers({ role: 'editor', company: 'IBM', age: 37 }).subscribe(
-          users => expect(users).toBe(testUsers)
-        );
+        userService
+          .getUsers({ role: 'editor', company: 'IBM', age: 37 })
+          .subscribe(users => expect(users).toBe(testUsers));
 
         // Specify that (exactly) one request will be made to the specified URL with the role parameter.
         const req = httpTestingController.expectOne(
-          (request) => request.url.startsWith(userService.userUrl)
-            && request.params.has('role') && request.params.has('company') && request.params.has('age')
+          request =>
+            request.url.startsWith(userService.userUrl) &&
+            request.params.has('role') &&
+            request.params.has('company') &&
+            request.params.has('age')
         );
 
         // Check that the request made to that URL was a GET request.
