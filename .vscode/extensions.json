@@ -42,7 +42,11 @@
 
     // Live Share
     // https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare
-    "MS-vsliveshare.vsliveshare"
+    "MS-vsliveshare.vsliveshare",
+
+    // Prettier, to generate consistent formatting
+    // https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
+    "esbenp.prettier-vscode",
   ],
   // List of extensions recommended by VS Code that should not be recommended for users of this workspace.
   "unwantedRecommendations": []

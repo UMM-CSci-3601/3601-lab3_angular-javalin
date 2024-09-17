@@ -16,22 +16,17 @@ describe('UserProfileComponent', () => {
   const mockUserService = new MockUserService();
   const chrisId = 'chris_id';
   const activatedRoute: ActivatedRouteStub = new ActivatedRouteStub({
-    id: chrisId
+    id: chrisId,
   });
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    imports: [
-        RouterTestingModule,
-        MatCardModule,
-        UserProfileComponent, UserCardComponent
-    ],
-    providers: [
+      imports: [RouterTestingModule, MatCardModule, UserProfileComponent, UserCardComponent],
+      providers: [
         { provide: UserService, useValue: mockUserService },
-        { provide: ActivatedRoute, useValue: activatedRoute }
-    ]
-})
-      .compileComponents();
+        { provide: ActivatedRoute, useValue: activatedRoute },
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -88,9 +83,7 @@ describe('UserProfileComponent', () => {
     // "Spy" on the `.addUser()` method in the user service. Here we basically
     // intercept any calls to that method and return the error response
     // defined above.
-    const getUserSpy = spyOn(mockUserService, 'getUserById')
-      .and
-      .returnValue(throwError(() => mockError));
+    const getUserSpy = spyOn(mockUserService, 'getUserById').and.returnValue(throwError(() => mockError));
 
     // component.user = throwError(() => mockError) as Observable<User>;
 

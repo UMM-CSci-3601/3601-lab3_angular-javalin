@@ -33,11 +33,11 @@ Your specific tasks for this lab can be found in the [LABTASKS.md](LABTASKS.md)
 file in this repository.
 
 > :warning: One thing to keep in mind is that the Angular developers provide two
-major updates to Angular each year. This lab is built using Angular 15. Pay attention to
-the version of Angular being used in examples and on-line documentation that you find. Most
-of the time, it won't matter very much, but there are times when something you find
-doesn't match what we're doing. If things seem odd, look at the versions for the
-example or documentation you're looking at just in case there's a mismatch that matters.
+> major updates to Angular each year. This lab is built using Angular 15. Pay attention to
+> the version of Angular being used in examples and on-line documentation that you find. Most
+> of the time, it won't matter very much, but there are times when something you find
+> doesn't match what we're doing. If things seem odd, look at the versions for the
+> example or documentation you're looking at just in case there's a mismatch that matters.
 
 ## Setup
 
@@ -148,7 +148,7 @@ From the `client` directory:
     window will display updated results whenever the tests are re-run. Typing CTRL-C in the terminal window will end
     the `ng test` process and close the generated Chrome window.
 - You can add `ng test --no-watch` if you just want to run the tests once
-    instead of going into the "run forever" mode.
+  instead of going into the "run forever" mode.
 - `ng test --code-coverage` runs the client tests and generates a coverage report
   - It generates a coverage report in your client directory: `client/coverage/client/index.html`.
   - Right click on `index.html` and select `Copy path` and paste it into your browser of choice. You can also drag and drop `index.html` onto the tab area of your browser and it will open it.

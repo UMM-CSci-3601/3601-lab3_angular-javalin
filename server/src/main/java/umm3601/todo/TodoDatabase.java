@@ -109,8 +109,8 @@ public class TodoDatabase {
   /**
    * Get an array of all the todos having the target status.
    *
-   * @param todos         the list of todos to filter by status
-   * @param targetStatus  the target status to look for
+   * @param todos        the list of todos to filter by status
+   * @param targetStatus the target status to look for
    * @return an array of all the todos from the given list that have the target
    *         status
    */
@@ -128,8 +128,8 @@ public class TodoDatabase {
   /**
    * Get an array of all the todos having the target body.
    *
-   * @param todos       the list of todos to filter by body
-   * @param targetBody  the target body to look for
+   * @param todos      the list of todos to filter by body
+   * @param targetBody the target body to look for
    * @return an array of all the todos from the given list that have the target
    *         body
    */
@@ -144,7 +144,7 @@ public class TodoDatabase {
    * Get an array of all the todos having the target owner.
    *
    * @param todos       the list of todos to filter by owner
-   * @param targetOwner  the target owner to look for
+   * @param targetOwner the target owner to look for
    * @return an array of all the todos from the given list that have the target
    *         owner
    */
@@ -158,8 +158,8 @@ public class TodoDatabase {
   /**
    * Get an array of all the todos having the target category.
    *
-   * @param todos           the list of todos to filter by category
-   * @param targetCategory  the target category to look for
+   * @param todos          the list of todos to filter by category
+   * @param targetCategory the target category to look for
    * @return an array of all the todos from the given list that have the target
    *         category
    */
@@ -173,9 +173,10 @@ public class TodoDatabase {
   /**
    * Get an array of all the todos sorted in the given order.
    *
-   * @param todos        the list of todos to filter by category
-   * @param targetOrder  the target order to sort
-   * @return an array of all the todos from the given list sorted in the given order
+   * @param todos       the list of todos to filter by category
+   * @param targetOrder the target order to sort
+   * @return an array of all the todos from the given list sorted in the given
+   *         order
    */
   public Todo[] sortTodos(Todo[] todos, String targetOrder) {
     switch (targetOrder) {
@@ -195,8 +196,8 @@ public class TodoDatabase {
   /**
    * Get an array of all the todos within specific limit.
    *
-   * @param todos         the list of todos to filter by limit
-   * @param targetLimit  the target limit of todo to return
+   * @param todos       the list of todos to filter by limit
+   * @param targetLimit the target limit of todo to return
    * @return an array of all the todos from the given list within the target limit
    */
   public Todo[] filterTodosByLimit(Todo[] todos, int targetLimit) {

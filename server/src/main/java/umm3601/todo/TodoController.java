@@ -28,7 +28,8 @@ public class TodoController implements Controller {
     this.todoDatabase = todoDatabase;
   }
 
-  /**s
+  /**
+   * s
    * Create a database using the json file, use it as data source for a new
    * UserController
    *

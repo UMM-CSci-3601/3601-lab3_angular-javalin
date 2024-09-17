@@ -20,8 +20,7 @@ export class UserService {
   // of `HttpClient` in the unit tests so they don't have to
   // make "real" HTTP calls to a server that might not exist or
   // might not be currently running.
-  constructor(private httpClient: HttpClient) {
-  }
+  constructor(private httpClient: HttpClient) {}
 
   /**
    * Get all the users from the server, filtered by the information

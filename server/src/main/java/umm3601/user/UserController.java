@@ -28,7 +28,8 @@ public class UserController implements Controller {
     this.userDatabase = userDatabase;
   }
 
-  /**s
+  /**
+   * s
    * Create a database using the json file, use it as data source for a new
    * UserController
    *

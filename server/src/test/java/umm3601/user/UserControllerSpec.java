@@ -127,9 +127,11 @@ public class UserControllerSpec {
 
     // Confirm that `json` was called with all the users.
     // The ArgumentCaptor<User[]> userArrayCaptor was initialized in the @BeforeEach
-    // Here, we wait to see what happens *when ctx calls the json method* in the call
+    // Here, we wait to see what happens *when ctx calls the json method* in the
+    // call
     // userController.getUsers(ctx) and the json method is passed a User[]
-    // (That's when the User[] that was passed as input to the json method is captured)
+    // (That's when the User[] that was passed as input to the json method is
+    // captured)
     verify(ctx).json(userArrayCaptor.capture());
     // Now that the User[] that was passed as input to the json method is captured,
     // we can make assertions about it. In particular, we'll assert that its length
@@ -140,36 +142,36 @@ public class UserControllerSpec {
     assertEquals(db.size(), userArrayCaptor.getValue().length);
   }
 
-   /**
+  /**
    * Confirm that if we process a request for users with age 25,
    * that all returned users have that age, and we get the correct
    * number of users.
    *
    * The structure of this test is:
    *
-   *    - We create a `Map` for the request's `queryParams`, that
-   *      contains a single entry, mapping the `AGE_KEY` to the
-   *      target value ("25"). This "tells" our `UserController`
-   *      that we want all the `User`s that have age 25.
-   *    - We create a validator that confirms that the code
-   *      we're testing calls `ctx.queryParamsAsClass("age", Integer.class)`,
-   *      i.e., it asks for the value in the query param map
-   *      associated with the key `"age"`, interpreted as an Integer.
-   *      That call needs to return a value of type `Validator<Integer>`
-   *      that will succeed and return the (integer) value `25` associated
-   *      with the (`String`) parameter value `"25"`.
-   *    - We then call `userController.getUsers(ctx)` to run the code
-   *      being tested with the constructed context `ctx`.
-   *    - We also use the `userListArrayCaptor` (defined above)
-   *      to capture the `ArrayList<User>` that the code under test
-   *      passes to `ctx.json(…)`. We can then confirm that the
-   *      correct list of users (i.e., all the users with age 25)
-   *      is passed in to be returned in the context.
-   *    - Now we can use a variety of assertions to confirm that
-   *      the code under test did the "right" thing:
-   *       - Confirm that the list of users has length 2
-   *       - Confirm that each user in the list has age 25
-   *       - Confirm that their names are "Jamie" and "Pat"
+   * - We create a `Map` for the request's `queryParams`, that
+   * contains a single entry, mapping the `AGE_KEY` to the
+   * target value ("25"). This "tells" our `UserController`
+   * that we want all the `User`s that have age 25.
+   * - We create a validator that confirms that the code
+   * we're testing calls `ctx.queryParamsAsClass("age", Integer.class)`,
+   * i.e., it asks for the value in the query param map
+   * associated with the key `"age"`, interpreted as an Integer.
+   * That call needs to return a value of type `Validator<Integer>`
+   * that will succeed and return the (integer) value `25` associated
+   * with the (`String`) parameter value `"25"`.
+   * - We then call `userController.getUsers(ctx)` to run the code
+   * being tested with the constructed context `ctx`.
+   * - We also use the `userListArrayCaptor` (defined above)
+   * to capture the `ArrayList<User>` that the code under test
+   * passes to `ctx.json(…)`. We can then confirm that the
+   * correct list of users (i.e., all the users with age 25)
+   * is passed in to be returned in the context.
+   * - Now we can use a variety of assertions to confirm that
+   * the code under test did the "right" thing:
+   * - Confirm that the list of users has length 2
+   * - Confirm that each user in the list has age 25
+   * - Confirm that their names are "Jamie" and "Pat"
    *
    * @throws IOException
    */
@@ -184,7 +186,7 @@ public class UserControllerSpec {
     // "37" if you ask for the value associated with the `AGE_KEY`.
     Map<String, List<String>> queryParams = new HashMap<>();
 
-    queryParams.put(AGE_KEY, Arrays.asList(new String[] {targetAgeString}));
+    queryParams.put(AGE_KEY, Arrays.asList(new String[] { targetAgeString }));
     // When the code being tested calls `ctx.queryParamMap()` return the
     // the `queryParams` map we just built.
     when(ctx.queryParamMap()).thenReturn(queryParams);
@@ -192,14 +194,18 @@ public class UserControllerSpec {
     // `targetAgeString`.
     when(ctx.queryParam(AGE_KEY)).thenReturn(targetAgeString);
 
-    // Create a validator that confirms that when we ask for the value associated with
+    // Create a validator that confirms that when we ask for the value associated
+    // with
     // `AGE_KEY` _as an integer_, we get back the integer value 37.
     Validation validation = new Validation();
     // The `AGE_KEY` should be name of the key whose value is being validated.
-    // You can actually put whatever you want here, because it's only used in the generation
-    // of testing error reports, but using the actually key value will make those reports more informative.
+    // You can actually put whatever you want here, because it's only used in the
+    // generation
+    // of testing error reports, but using the actually key value will make those
+    // reports more informative.
     Validator<Integer> validator = validation.validator(AGE_KEY, Integer.class, targetAgeString);
-    // When the code being tested calls `ctx.queryParamAsClass("age", Integer.class)`
+    // When the code being tested calls `ctx.queryParamAsClass("age",
+    // Integer.class)`
     // we'll return the `Validator` we just constructed.
     when(ctx.queryParamAsClass(AGE_KEY, Integer.class))
         .thenReturn(validator);
@@ -237,7 +243,7 @@ public class UserControllerSpec {
     // We'll set the requested "age" to be a string ("abc")
     // that can't be parsed to a number.
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("age", Arrays.asList(new String[] {"abc"}));
+    queryParams.put("age", Arrays.asList(new String[] { "abc" }));
     // Tell the mock `ctx` object to return our query
     // param map when `queryParamMap()` is called.
     when(ctx.queryParamMap()).thenReturn(queryParams);
@@ -258,7 +264,7 @@ public class UserControllerSpec {
   @Test
   public void canGetUsersWithCompany() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("company", Arrays.asList(new String[] {"OHMNET"}));
+    queryParams.put("company", Arrays.asList(new String[] { "OHMNET" }));
 
     when(ctx.queryParamMap()).thenReturn(queryParams);
     userController.getUsers(ctx);
@@ -273,7 +279,7 @@ public class UserControllerSpec {
   @Test
   public void getUsersByRole() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("role", Arrays.asList(new String[] {"viewer"}));
+    queryParams.put("role", Arrays.asList(new String[] { "viewer" }));
 
     when(ctx.queryParamMap()).thenReturn(queryParams);
     when(ctx.status()).thenReturn(HttpStatus.OK);
@@ -294,8 +300,8 @@ public class UserControllerSpec {
   public void canGetUsersWithGivenAgeAndCompany() throws IOException {
 
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("company", Arrays.asList(new String[] {"OHMNET"}));
-    queryParams.put("age", Arrays.asList(new String[] {"25"}));
+    queryParams.put("company", Arrays.asList(new String[] { "OHMNET" }));
+    queryParams.put("age", Arrays.asList(new String[] { "25" }));
     when(ctx.queryParamMap()).thenReturn(queryParams);
 
     userController.getUsers(ctx);

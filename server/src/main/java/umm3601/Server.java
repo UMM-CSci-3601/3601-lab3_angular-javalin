@@ -33,7 +33,8 @@ public class Server {
   /**
    * Configure and start the server.
    *
-   * This configures and starts the Javalin server, which will start listening for HTTP requests.
+   * This configures and starts the Javalin server, which will start listening for
+   * HTTP requests.
    * It also sets up the server to shut down gracefully if it's killed or if the
    * JVM is shut down.
    */
@@ -47,11 +48,11 @@ public class Server {
    * Configure the Javalin server. This includes
    *
    * - Adding a route overview plugin to make it easier to see what routes
-   *   are available.
+   * are available.
    * - Setting it up to shut down gracefully if it's killed or if the
-   *   JVM is shut down.
+   * JVM is shut down.
    * - Setting up a handler for uncaught exceptions to return an HTTP 500
-   *   error.
+   * error.
    *
    * @return The Javalin server instance
    */
@@ -67,8 +68,9 @@ public class Server {
      * `plugins.register(new RouteOverviewPlugin("/api"))` adds
      * a helpful endpoint for us to use during development. In particular
      * `http://localhost:4567/api` shows all of the available endpoints and
-     * what HTTP methods they use. (Replace `localhost` and `4567` with whatever server
-     * and  port you're actually using, if they are different.)
+     * what HTTP methods they use. (Replace `localhost` and `4567` with whatever
+     * server
+     * and port you're actually using, if they are different.)
      */
     Javalin server = Javalin.create(config -> {
       // This tells the server where to look for static files,

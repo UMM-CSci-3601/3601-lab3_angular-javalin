@@ -18,7 +18,7 @@ export class MockUserService extends UserService {
       company: 'UMM',
       email: 'chris@this.that',
       role: 'admin',
-      avatar: 'https://gravatar.com/avatar/8c9616d6cc5de638ea6920fb5d65fc6c?d=identicon'
+      avatar: 'https://gravatar.com/avatar/8c9616d6cc5de638ea6920fb5d65fc6c?d=identicon',
     },
     {
       _id: 'pat_id',
@@ -27,7 +27,7 @@ export class MockUserService extends UserService {
       company: 'IBM',
       email: 'pat@something.com',
       role: 'editor',
-      avatar: 'https://gravatar.com/avatar/b42a11826c3bde672bce7e06ad729d44?d=identicon'
+      avatar: 'https://gravatar.com/avatar/b42a11826c3bde672bce7e06ad729d44?d=identicon',
     },
     {
       _id: 'jamie_id',
@@ -36,8 +36,8 @@ export class MockUserService extends UserService {
       company: 'Frogs, Inc.',
       email: 'jamie@frogs.com',
       role: 'viewer',
-      avatar: 'https://gravatar.com/avatar/d4a6c71dd9470ad4cf58f78c100258bf?d=identicon'
-    }
+      avatar: 'https://gravatar.com/avatar/d4a6c71dd9470ad4cf58f78c100258bf?d=identicon',
+    },
   ];
 
   constructor() {
@@ -71,5 +71,4 @@ export class MockUserService extends UserService {
       return of(null);
     }
   }
-
 }
