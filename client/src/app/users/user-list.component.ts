@@ -4,7 +4,14 @@ import { User, UserRole } from './user';
 import { UserService } from './user.service';
 import { Subject, takeUntil } from 'rxjs';
 import { RouterLink } from '@angular/router';
-import { MatNavList, MatListSubheaderCssMatStyler, MatListItem, MatListItemAvatar, MatListItemTitle, MatListItemLine } from '@angular/material/list';
+import {
+  MatNavList,
+  MatListSubheaderCssMatStyler,
+  MatListItem,
+  MatListItemAvatar,
+  MatListItemTitle,
+  MatListItemLine,
+} from '@angular/material/list';
 import { UserCardComponent } from './user-card.component';
 
 import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
@@ -26,12 +33,34 @@ import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
  * makes the most sense to do the filtering.
  */
 @Component({
-    selector: 'app-user-list-component',
-    templateUrl: 'user-list.component.html',
-    styleUrls: ['./user-list.component.scss'],
-    providers: [],
-    standalone: true,
-    imports: [MatCard, MatCardTitle, MatCardContent, MatFormField, MatLabel, MatInput, FormsModule, MatHint, MatSelect, MatOption, MatRadioGroup, MatRadioButton, UserCardComponent, MatNavList, MatListSubheaderCssMatStyler, MatListItem, RouterLink, MatListItemAvatar, MatListItemTitle, MatListItemLine, MatError]
+  selector: 'app-user-list-component',
+  templateUrl: 'user-list.component.html',
+  styleUrls: ['./user-list.component.scss'],
+  providers: [],
+  standalone: true,
+  imports: [
+    MatCard,
+    MatCardTitle,
+    MatCardContent,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    FormsModule,
+    MatHint,
+    MatSelect,
+    MatOption,
+    MatRadioGroup,
+    MatRadioButton,
+    UserCardComponent,
+    MatNavList,
+    MatListSubheaderCssMatStyler,
+    MatListItem,
+    RouterLink,
+    MatListItemAvatar,
+    MatListItemTitle,
+    MatListItemLine,
+    MatError,
+  ],
 })
 export class UserListComponent implements OnInit, OnDestroy {
   // These are public so that tests can reference them (.spec.ts)
@@ -54,7 +83,10 @@ export class UserListComponent implements OnInit, OnDestroy {
    * @param userService the `UserService` used to get users from the server
    * @param snackBar the `MatSnackBar` used to display feedback
    */
-  constructor(private userService: UserService, private snackBar: MatSnackBar) {
+  constructor(
+    private userService: UserService,
+    private snackBar: MatSnackBar
+  ) {
     // Nothing here – everything is in the injection parameters.
   }
 
@@ -66,30 +98,31 @@ export class UserListComponent implements OnInit, OnDestroy {
     // A user-list-component is paying attention to userService.getUsers()
     // (which is an Observable<User[]>).
     // (For more on Observable, see: https://reactivex.io/documentation/observable.html)
-    this.userService.getUsers({
-      // Filter the users by the role and age specified in the GUI
-      role: this.userRole,
-      age: this.userAge
-    }).pipe(
-      takeUntil(this.ngUnsubscribe)
-    ).subscribe({
-      // Next time we see a change in the Observable<User[]>,
-      // refer to that User[] as returnedUsers here and do the steps in the {}
-      next: (returnedUsers) => {
-        // First, update the array of serverFilteredUsers to be the User[] in the observable
-        this.serverFilteredUsers = returnedUsers;
-        // Then update the filters for our client-side filtering as described in this method
-        this.updateFilter();
-      },
-      // If we observe an error in that Observable, put that message in a snackbar so we can learn more
-      error: (err) => {
-        if (err.error instanceof ErrorEvent) {
-          this.errMsg = `Problem in the client – Error: ${err.error.message}`;
-        } else {
-          this.errMsg = `Problem contacting the server – Error Code: ${err.status}\nMessage: ${err.message}`;
-        }
-      },
-    })
+    this.userService
+      .getUsers({
+        // Filter the users by the role and age specified in the GUI
+        role: this.userRole,
+        age: this.userAge,
+      })
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe({
+        // Next time we see a change in the Observable<User[]>,
+        // refer to that User[] as returnedUsers here and do the steps in the {}
+        next: returnedUsers => {
+          // First, update the array of serverFilteredUsers to be the User[] in the observable
+          this.serverFilteredUsers = returnedUsers;
+          // Then update the filters for our client-side filtering as described in this method
+          this.updateFilter();
+        },
+        // If we observe an error in that Observable, put that message in a snackbar so we can learn more
+        error: err => {
+          if (err.error instanceof ErrorEvent) {
+            this.errMsg = `Problem in the client – Error: ${err.error.message}`;
+          } else {
+            this.errMsg = `Problem contacting the server – Error Code: ${err.status}\nMessage: ${err.message}`;
+          }
+        },
+      });
   }
 
   /**
@@ -97,9 +130,10 @@ export class UserListComponent implements OnInit, OnDestroy {
    * get an updated list of `filteredUsers`.
    */
   public updateFilter() {
-    this.filteredUsers = this.userService.filterUsers(
-      this.serverFilteredUsers, { name: this.userName, company: this.userCompany }
-    );
+    this.filteredUsers = this.userService.filterUsers(this.serverFilteredUsers, {
+      name: this.userName,
+      company: this.userCompany,
+    });
   }
 
   /**

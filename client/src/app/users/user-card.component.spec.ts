@@ -12,13 +12,8 @@ describe('UserCardComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    imports: [
-        BrowserAnimationsModule,
-        MatCardModule,
-        UserCardComponent
-    ]
-})
-    .compileComponents();
+      imports: [BrowserAnimationsModule, MatCardModule, UserCardComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -31,7 +26,7 @@ describe('UserCardComponent', () => {
       company: 'UMM',
       email: 'chris@this.that',
       role: 'admin',
-      avatar: 'https://gravatar.com/avatar/8c9616d6cc5de638ea6920fb5d65fc6c?d=identicon'
+      avatar: 'https://gravatar.com/avatar/8c9616d6cc5de638ea6920fb5d65fc6c?d=identicon',
     };
     // This is a semi-weird hack to get around the (current) inability to write to input
     // signals. Hopefully once that is fixed, we should be able to do something more like
