@@ -39,7 +39,7 @@ dependencies {
   implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.2'
 
   // Simple Logging Facade for Java
-  implementation 'org.slf4j:slf4j-simple:2.0.13'
+  implementation 'org.slf4j:slf4j-simple:2.0.16'
 
   // JUnit Jupiter API for testing.
   testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.3'
