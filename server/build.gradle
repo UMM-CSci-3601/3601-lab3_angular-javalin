@@ -45,7 +45,7 @@ dependencies {
   testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.3'
 
   // JUnit Jupiter Engine for testing.
-  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.0'
+  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.1'
 
   // Mockito for testing
   testImplementation 'org.mockito:mockito-core:5.13.0'
