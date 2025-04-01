@@ -8,11 +8,10 @@ import { UserService } from './user.service';
 import { UserCardComponent } from './user-card.component';
 
 @Component({
-  selector: 'app-user-profile',
-  templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.scss'],
-  standalone: true,
-  imports: [NgIf, UserCardComponent, MatCardModule],
+    selector: 'app-user-profile',
+    templateUrl: './user-profile.component.html',
+    styleUrls: ['./user-profile.component.scss'],
+    imports: [NgIf, UserCardComponent, MatCardModule]
 })
 export class UserProfileComponent implements OnInit, OnDestroy {
   user: User;
